@@ -1,24 +1,23 @@
 import mongoose from 'mongoose';
-import { unique } from 'next/dist/build/utils';
 
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
-        require: [true, "pls provide username"],
+        required: [true, "pls provide username"],
         unique: true
     },
     email: {
         type: String,
-        require: [true, "pls provide email"],
+        required: [true, "pls provide email"],
         unique: true
     },
     phone: {
         type: String,
-        require: [true, "pls provide phonenumbeer"]
+        required: [true, "pls provide phonenumbeer"]
     },
     password: {
         type: String,
-        require: [true, "pls provide password"],
+        required: [true, "pls provide password"],
         unique: true
     },
     isVerified: {

@@ -3,18 +3,19 @@ import User from "@/app/models/user";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from 'jsonwebtoken'
+import GetDataFromToken from "@/app/helpers/getDataFromToken";
 
 connect()
 
 export async function GET(request: NextRequest) {
     try {
-        const res = NextResponse.json({ message: "logout done", success: true }, { status: 200 })
+        const id = await GetDataFromToken(request)
+        console.log("ID from token:", id)
+        const user = await User.findById(id)
+        console.log("User found:", user)
 
-        res.cookies.set("token", "", {
-            httpOnly: true,
-            expires: new Date(0)
-        })
-        return res
+        return NextResponse.json({ user }, { status: 200 })
+
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 })
     }

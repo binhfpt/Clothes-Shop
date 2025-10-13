@@ -47,17 +47,7 @@ const Fabric = () => {
     const [colors, setColors] = useState(["black", "red", "green", "blue", "yellow", "orange"])
     const [penColor, setPenColor] = useState(colors[0])
 
-    const [isOn, setIsOn] = useState(false)
-    // Khởi tạo Fabric Canvas
 
-    // useEffect cho dark mode
-    useEffect(() => {
-        if (isOn) {
-            document.documentElement.classList.add("dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-        }
-    }, [isOn]); // Chỉ phụ thuộc vào isOn
 
     // useEffect khởi tạo canvas (chạy 1 lần duy nhất)
     useEffect(() => {
@@ -513,16 +503,7 @@ const Fabric = () => {
                         </div>
                     </PopoverContent>
                 </Popover>
-                <button className="w-10 h-10 flex bg-lightground items-center justify-center absolute bottom-30 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition" onClick={() => setIsOn(!isOn)}>
 
-                    {isOn ? (
-                        <Sun className="text-text-l" />
-
-                    ) : (
-                        <Moon className="text-text-l " />
-                    )}
-
-                </button>
             </div>
 
             <div className='w-[30%] '>

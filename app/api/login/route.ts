@@ -24,8 +24,13 @@ export async function POST(request: NextRequest) {
         }
 
         const token = await jwt.sign(tokenPayload, process.env.TOKEN_SECRET!, { expiresIn: '1h' })
-
-
+        const res = NextResponse.json({ message: "login done", success: true }, { status: 200 })
+        res.cookies.set("token", token, {
+            httpOnly: true,
+            path: "/",
+            maxAge: 60 * 60,
+        })
+        return res
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 })
     }
