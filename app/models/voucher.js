@@ -16,7 +16,6 @@ const VoucherSchema = new mongoose.Schema(
 
         startsAt: { type: Date },
         endsAt: { type: Date },
-
         // phạm vi áp dụng
         applicableProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
         applicableCategories: [{ type: mongoose.Schema.Types.ObjectId, ref: "category" }],
