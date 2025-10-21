@@ -2,7 +2,7 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
     Select,
     SelectContent,
@@ -26,6 +26,8 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Plus, Trash2, Upload, X } from 'lucide-react'
 import brand from '@/app/models/brand'
+import useFetch from '@/app/hooks/useFetchData'
+import toast from 'react-hot-toast'
 const AddProduct = () => {
     const [formData, setFormData] = useState<any>({
         title: '',
@@ -55,15 +57,12 @@ const AddProduct = () => {
         }));
     };
 
-    const categories = ([
-        { _id: '1', name: 'Giày thể thao' },
-        { _id: '2', name: 'Áo thun' },
-        { _id: '3', name: 'Quần jean' },
-        { _id: '4', name: 'Phụ kiện' }
-    ])
+
+
+
     const updateForm = (e: any) => {
         setFormData((prev: any) => ({
-            ...formData,
+            ...prev,
             [e.target.name]: e.target.value
         }))
     }
@@ -115,12 +114,151 @@ const AddProduct = () => {
                 ...prev,
                 images: [
                     ...prev.images,
-                    { file, preview: url }
+                    {
+                        file,        // Lưu File object để upload
+                        preview: url // Blob URL để hiển thị preview
+                    },
                 ],
             }));
         });
     }
 
+    const handleUploadImages = async () => {
+        if (!formData?.images || formData.images.length === 0) {
+            throw new Error("Chưa chọn ảnh")
+        }
+
+        const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+        const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+
+        if (!CLOUD_NAME || !UPLOAD_PRESET) {
+            throw new Error("Missing Cloudinary configuration")
+        }
+
+        try {
+            const uploadPromises = formData.images.map(async (image: any) => {
+                // Skip if already uploaded (preview là Cloudinary URL)
+                if (image.preview && image.preview.startsWith("https://res.cloudinary.com")) {
+                    return image.preview  //  Return URL string
+                }
+
+                // Upload new image
+                const formDataForCloud = new FormData()
+                formDataForCloud.append("file", image.file)
+                formDataForCloud.append("upload_preset", UPLOAD_PRESET)
+
+                const res = await fetch(
+                    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+                    { method: "POST", body: formDataForCloud }
+                )
+
+                if (!res.ok) {
+                    const errorText = await res.text().catch(() => "Unknown error")
+                    throw new Error(`Upload failed: ${res.status} - ${errorText}`)
+                }
+
+                const data = await res.json()
+                return data.secure_url  //  Return URL string
+            })
+
+            const uploadedImageUrls = await Promise.all(uploadPromises)  //  Array of strings
+
+            // Update formData
+            setFormData((prev: any) => ({
+                ...prev,
+                images: uploadedImageUrls.map((url) => url)
+            }))
+
+            return uploadedImageUrls  // Return [URL1, URL2, ...]
+        } catch (error) {
+            console.error("Upload error:", error)
+            throw error
+        }
+    }
+
+    const handleCreateProduct = async () => {
+        try {
+            // Upload ảnh và nhận array URLs
+            const imageUrls = await handleUploadImages()
+
+            //  Gửi images là array strings, KHÔNG phải objects
+            const productData = {
+                title: formData.title,
+                slug: formData.slug,
+                description: formData.description,
+                brand: formData.brand,
+                category: formData.category,
+                categories: formData.categories,
+                images: imageUrls,  //  Array of strings: ["url1", "url2", ...]
+                variants: formData.variants,
+                price: formData.price,
+                discountPrice: formData.discountPrice,
+                stock: formData.stock,
+                isActive: formData.isActive,
+                isNew: formData.isNew,
+                seoTitle: formData.seoTitle,
+                seoDescription: formData.seoDescription,
+            };
+
+            console.log("Sending:", productData)
+            console.log("Images:", imageUrls)
+
+            const res = await fetch('/api/product/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productData)
+            })
+
+            if (res.ok) {
+                toast.success('Save successfully!', {
+                    duration: 2000,
+                    style: {
+                        boxShadow: 'none',
+                        background: '#a3ffbc',
+                    },
+                })
+            } else {
+                const error = await res.json()
+                toast.error(error.error || 'Failed to save product', {
+                    duration: 2000,
+                    style: { boxShadow: 'none', background: '#ff6b6b' }
+                })
+            }
+        } catch (error: any) {
+            toast.error(`Error: ${error.message}`, {
+                duration: 2000,
+                style: { boxShadow: 'none', background: '#ff6b6b' }
+            })
+        }
+    }
+
+    /// Brand
+    const { data: brands, loading: loadingBrands, error: errorBrands } = useFetch("/api/brand", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    })
+
+    /// Categori
+    const { data: category, loading: loadingCategory, error: errorCategory } = useFetch("/api/get/categories", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    })
+
+
+    /// subcategoru
+    const { data: subcategory, loading: loadingSubcategory, error: errorSubcategory } = useFetch("/api/get/subcategories", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    })
+
+
+    const categories = useMemo(() => {
+        if (!subcategory || !subcategory.categories) return []
+
+        return subcategory.categories.filter(
+            (i: any) => i.parent === formData.category
+        )
+    }, [subcategory, formData.category])
 
 
     return (
@@ -131,10 +269,11 @@ const AddProduct = () => {
             <div className='flex flex-col gap-5'>
                 <h2 className="text-lg font-semibold text-gray-700">
                     Common information<span className="text-red-500">*</span>
-                </h2>                <div className="flex flex-col gap-5">
+                </h2>
+                <div className="flex flex-col gap-5">
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor="name" className="text-text-l">Name</Label>
-                        <Input id="name" onChange={updateForm} name="title" className="text-text-l" placeholder="Enter product name" />
+                        <Label htmlFor="title" className="text-text-l">Title</Label>
+                        <Input id="title" onChange={updateForm} name="title" className="text-text-l" placeholder="Enter product name" />
                     </div>
                     <div className='flex flex-col gap-2'    >
                         <Label htmlFor="description" className="text-text-l">Description</Label>
@@ -159,12 +298,11 @@ const AddProduct = () => {
                             </SelectTrigger>
                             <SelectContent className='text-text-tilte' >
                                 <SelectGroup className='text-text-tilte' >
-                                    <SelectLabel>Fruits</SelectLabel>
-                                    <SelectItem className='text-text-tilte' value="apple">Apple</SelectItem>
-                                    <SelectItem className='text-text-tilte' value="banana">Banana</SelectItem>
-                                    <SelectItem className='text-text-tilte' value="blueberry">Blueberry</SelectItem>
-                                    <SelectItem className='text-text-tilte' value="grapes">Grapes</SelectItem>
-                                    <SelectItem className='text-text-tilte' value="pineapple">Pineapple</SelectItem>
+                                    <SelectLabel>Brands</SelectLabel>
+                                    {!loadingBrands && brands.brands.length > 0 && brands.brands.map((brand: any) => (
+                                        <SelectItem key={brand._id} className='text-text-tilte' value={brand._id}>{brand.name}</SelectItem>
+                                    ))}
+
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -177,12 +315,10 @@ const AddProduct = () => {
                             </SelectTrigger>
                             <SelectContent >
                                 <SelectGroup>
-                                    <SelectLabel>Fruits</SelectLabel>
-                                    <SelectItem value="apple">Apple</SelectItem>
-                                    <SelectItem value="banana">Banana</SelectItem>
-                                    <SelectItem value="blueberry">Blueberry</SelectItem>
-                                    <SelectItem value="grapes">Grapes</SelectItem>
-                                    <SelectItem value="pineapple">Pineapple</SelectItem>
+                                    <SelectLabel>Main Categories</SelectLabel>
+                                    {!loadingCategory && category.categories.length > 0 && category.categories.map((cate: any) => (
+                                        <SelectItem key={cate._id} value={cate._id}>{cate.name}</SelectItem>
+                                    ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -192,17 +328,36 @@ const AddProduct = () => {
                 <div className='flex flex-col gap-3'>
                     <Label className='text-text-tilte'>Sub Categories</Label>
                     <div className='flex gap-3'>
-                        {categories.map((ca: any) => (
-                            <Button key={ca._id} type='button' onClick={(e) => setFormData(
-                                (prev: any) => ({
-                                    ...prev, categories: [...prev.categories, ca._id]
-                                })
-                            )
-                            } className='bg-gray-200 text-gray-600 rounded-full font-normal h-7'>{ca.name}</Button>
+                        {categories.length > 0 ? (
+                            categories.map((ca: any) => (
+                                <Button
+                                    key={ca._id}
+                                    className={`${formData.categories.includes(ca._id)
+                                        ? "bg-bg-btn-dynamic text-gray-50"
+                                        : "bg-gray-100 text-gray-500"
+                                        } hover:bg-btn-hv-bg hover:text-gray-50`}
+                                    type="button"
+                                    onClick={() =>
+                                        setFormData((prev: any) => {
+                                            const alreadySelected = prev.categories.includes(ca._id);
+                                            return {
+                                                ...prev,
+                                                categories: alreadySelected
+                                                    ? prev.categories.filter((id: any) => id !== ca._id)
+                                                    : [...prev.categories, ca._id],
+                                            };
+                                        })
+                                    }
+                                >
+                                    {ca.name}
+                                </Button>
 
-                        ))}
-
+                            ))
+                        ) : (
+                            <p className='text-sm text-gray-700'>Không có sub category nào</p>
+                        )}
                     </div>
+
                 </div>
             </div>
             <Separator className=" bg-gray-200 my-10" />
@@ -215,7 +370,7 @@ const AddProduct = () => {
 
                 <div className="grid grid-cols-4 gap-4 mb-4">
                     {formData.images && formData.images.map((img: any, idx: number) => (
-                        <div className="relative group" key={img}>
+                        <div className="relative group" key={idx}>
                             <img src={`${img.preview}`} className="w-full h-32 object-contain rounded-md" />
                             <button
                                 type="button"
@@ -337,7 +492,8 @@ const AddProduct = () => {
             <div className='flex gap-3 justify-end mt-15'>
                 <Button size={'lg'} className='bg-background border-2 border-gray-200 hover:bg-foreground text-text-tilte cursor-pointer font-normal'> Cancel</Button>
 
-                <Button onClick={() => console.log(formData)} size={'lg'} className='bg-bg-btn-dynamic hover:bg-btn-hv-bg cursor-pointer'> <Plus size={16} />Create Product</Button>
+                <Button onClick={handleCreateProduct} size={'lg'} className='bg-bg-btn-dynamic hover:bg-btn-hv-bg cursor-pointer'> <Plus size={16} />Create Product</Button>
+
             </div>
         </div >
     )
