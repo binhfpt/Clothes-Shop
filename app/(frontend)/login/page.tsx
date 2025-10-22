@@ -94,7 +94,7 @@ export default function LoginPage() {
                     className="w-full bg-bg-btn-dynamic p-6 mt-6 text-text-button shadow-shadow-best hover:bg-btn-hv-bg cursor-pointer hover:text-text-l"
                     disabled={loading}
                 >
-                    {loading ? <LoaderIcon /> : "Login"}
+                    {loading ? <LoaderIcon className="animate-spin " /> : "Login"}
                 </Button>
             </form>
             <div className="flex justify-between">

@@ -45,7 +45,7 @@ const ProductSchema = new mongoose.Schema(
         // SEO
         seoTitle: { type: String },
         seoDescription: { type: String },
-
+        sold: { type: Number },
         // Rating tổng hợp (điền bởi middleware/cron từ Review)
         ratingAvg: { type: Number, default: 0, min: 0, max: 5 },
         ratingCount: { type: Number, default: 0, min: 0 }

@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/select"
 import { Checkbox } from '@/components/ui/checkbox'
 import toast, { ToastBar, Toaster } from 'react-hot-toast'
+import LoadingBig from '@/components/loading-big'
+import NoDataFound from '@/components/ui/nodata'
 
 type User = {
     username: string,
@@ -108,9 +110,9 @@ const UserAdminPage = () => {
 
     const totalPages = getTotalPage(filteredUsers, pageSize) // Sử dụng filteredUsers
 
-    if (loading) return <div>LOADING....</div>
+    if (loading) return <LoadingBig />
     if (error) return <div>Error: {error}</div>
-    if (allUsers.length === 0) return <div>User not found</div>
+    if (allUsers.length === 0) return <NoDataFound />
 
     const handleSelectAll = (checked: boolean) => {
         if (checked) {

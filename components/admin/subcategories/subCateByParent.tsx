@@ -22,6 +22,8 @@ import BinhSearch from '@/components/ui/custom-search'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import toast from 'react-hot-toast'
+import LoadingBig from '@/components/loading-big'
+import NoDataFound from '@/components/ui/nodata'
 const SubCateByParentData = ({ slug }: { slug: string }) => {
     const router = useRouter();
 
@@ -217,9 +219,9 @@ const SubCateByParentData = ({ slug }: { slug: string }) => {
     }, [search, subCategory, filterObject])
 
     // Render
-    if (loadingMain) return <div>Loading main category...</div>
+    if (loadingMain) return <LoadingBig />
     if (errorMain) return <div>Error loading main category</div>
-    if (!mainCategory) return <div>No category found</div>
+    if (!mainCategory) return <NoDataFound />
 
     function handleSetting(id: string, type: string): void {
         if (type === "delete") {

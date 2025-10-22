@@ -71,6 +71,7 @@ export async function POST(req: NextRequest) {
             images: body.images,
             variants: finalVariants || [],
             price: Number(body.price),
+            sold: 0,
             discountPrice: body.discountPrice ? Number(body.discountPrice) : undefined,
             stock: Number(body.stock),
             isActive: body.isActive ?? true,
