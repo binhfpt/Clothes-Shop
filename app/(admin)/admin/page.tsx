@@ -75,12 +75,12 @@ const AdminDashboard = () => {
 
                                 {/* Title + Description */}
                                 <CardHeader className="space-y-1">
-                                    <CardTitle className="text-2xl font-bold truncate text-bg-btn-dynamic">{name}</CardTitle>
-                                    <CardDescription className="text-base line-clamp-2">{description}</CardDescription>
+                                    <CardTitle className="text-2xl font-bold truncate text-bg-btn-dynamic font-satoshi">{name}</CardTitle>
+                                    <CardDescription className="text-base line-clamp-2 font-satoshi">{description}</CardDescription>
                                 </CardHeader>
 
                                 {/* Footer */}
-                                <CardFooter className="justify-center mt-auto">
+                                <CardFooter className="justify-center mt-auto font-sans">
                                     <CardDescription className="text-xs text-muted-foreground truncate">
                                         {webName}
                                     </CardDescription>

@@ -1,103 +1,80 @@
+"use client"
+import ButtonInvincible from "@/components/custom/Button";
+import NavBar from "@/components/ui/navbar";
 import Image from "next/image";
+import { motion } from "framer-motion"
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+  return (
+    <div>
+      <NavBar />
+      <div className="bg-blue-50 flex w-full relative h-screen">
+        <div className="absolute left-15 top-15 text-center leading-tight">
+          <motion.h1
+            initial={{ opacity: 0.3, x: 180 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-5xl md:text-6xl font-satoshi mb-3 font-semibold text-gray-700"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Make yourself
+          </motion.h1>
+
+          <motion.span
+            initial={{ opacity: 0.3, x: -180 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
+            whileHover={{ x: 30, transition: { duration: 0.5, ease: "easeOut" } }}
+            className="block text-bg-btn-dynamic font-semibold mb-3 font-satoshi text-6xl md:text-7xl"
           >
-            Read our docs
-          </a>
+            Invincible
+          </motion.span>
+
+          <motion.h1
+            initial={{ opacity: 0.3, x: 200 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.8 }}
+            className="text-5xl md:text-6xl font-satoshi font-semibold text-gray-700"
+          >
+            through the look
+          </motion.h1>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <motion.img
+          initial={{ opacity: 1, y: 100, x: 20 }}
+          animate={{ opacity: 1, y: 0, x: 0 }}
+          whileHover={{ y: -80, x: -20 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute inset-0 m-auto"
+          width={550}
+          height={614}
+          src="/pic/freepik_br_5ae3b68a-2a71-4ba8-b3e4-c55d92a0698b.png"
+        />
+        <div className="absolute  right-25 bottom-70 w-100 text-wrap">
+          <div className="flex gap-5 w-full flex-col justify-center items-center inset-0">
+            <motion.h4
+              initial={{ opacity: 0.1, y: -100, x: 20 }}
+              animate={{ opacity: 1, y: 0, x: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              whileHover={{ y: -5, transition: { duration: 0.5, ease: "easeOut" } }}
+
+              className="text-gray-500 ">Every outfit tells your story — a reflection of strength, freedom, and individuality. Discover fashion that doesn’t just follow trends, but defines your identity.</motion.h4>
+            <ButtonInvincible border={5} width={200} height={70} value="Explore Collection" />
+          </div>
+
+        </div>
+        {/* <motion.img
+          initial={{ opacity: 1, y: 20, x: 20 }}
+          animate={{ opacity: 1, y: 0, x: 0 }}
+          whileHover={{ y: -20, x: 20 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute left-20 bottom-20"
+          width={120}
+
+          src="/pic/pexels-skylar-kang-6046231-removebg-preview.png"
+        /> */}
+      </div>
     </div>
-  );
+  )
 }
