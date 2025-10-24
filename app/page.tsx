@@ -51,13 +51,13 @@ export default function Home() {
           height={614}
           src="/pic/freepik_br_5ae3b68a-2a71-4ba8-b3e4-c55d92a0698b.png"
         />
-        <div className="absolute  right-25 bottom-70 w-100 text-wrap">
+        <div className="absolute  right-25 bottom-45 w-100 text-wrap">
           <div className="flex gap-5 w-full flex-col justify-center items-center inset-0">
             <motion.h4
               initial={{ opacity: 0.1, y: -100, x: 20 }}
               animate={{ opacity: 1, y: 0, x: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              whileHover={{ y: -5, transition: { duration: 0.5, ease: "easeOut" } }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              whileHover={{ y: -15, transition: { duration: 0.5, ease: "easeOut" } }}
 
               className="text-gray-500 ">Every outfit tells your story — a reflection of strength, freedom, and individuality. Discover fashion that doesn’t just follow trends, but defines your identity.</motion.h4>
             <ButtonInvincible border={5} width={200} height={70} value="Explore Collection" />
