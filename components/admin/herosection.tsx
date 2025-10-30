@@ -5,7 +5,12 @@ import { motion } from 'framer-motion'
 
 const HeroSection = () => {
     return (
-        <div className="bg-blue-50 flex w-full relative h-screen">
+        <div className="bg-blue-50 bg-center flex w-full relative h-screen">
+            {/* <img
+                src="/pic/pexels-scottwebb-1029618.jpg"
+                alt="background"
+                className="absolute inset-0 w-full h-full object-cover  blur-xs"
+            /> */}
             <div className="absolute left-15 top-15 text-center leading-tight">
                 <motion.h1
                     initial={{ opacity: 0.3, x: 180 }}
@@ -52,10 +57,8 @@ const HeroSection = () => {
                         initial={{ opacity: 0.1, y: -100, x: 20 }}
                         animate={{ opacity: 1, y: 0, x: 0 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
-                        whileHover={{ y: -15, transition: { duration: 0.5, ease: "easeOut" } }}
-
                         className="text-gray-500 ">Every outfit tells your story — a reflection of strength, freedom, and individuality. Discover fashion that doesn’t just follow trends, but defines your identity.</motion.h4>
-                    <ButtonInvincible border={5} width={200} height={70} value="Explore Collection" />
+                    <ButtonInvincible border={8} width={200} height={70} value="Explore Collection" />
                 </div>
 
             </div>

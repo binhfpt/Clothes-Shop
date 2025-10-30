@@ -16,7 +16,7 @@ export default function ButtonInvincible({ value, width, height, onclick, border
                 className="
           relative flex items-center justify-center
           font-semibold rounded-xl overflow-hidden
-          text-[#FAE300] cursor-pointer
+          text-gray-50 cursor-pointer
           
           before:content-[''] before:absolute
           before:left-1/2 before:top-1/2
@@ -24,7 +24,7 @@ export default function ButtonInvincible({ value, width, height, onclick, border
           before:-translate-x-1/2 before:-translate-y-1/2
           before:rounded-[inherit]
           before:z-0 before:opacity-0
-          before:bg-[conic-gradient(at_50%_50%,transparent_0_18%,#333333_88%_92%,transparent_92%_100%)]
+          before:bg-[conic-gradient(at_50%_50%,transparent_0_18%,#527FE6_88%_92%,transparent_92%_100%)]
           hover:before:opacity-80 hover:before:animate-[spin_3s_linear_infinite]
           transition-all duration-300
         "
@@ -34,7 +34,7 @@ export default function ButtonInvincible({ value, width, height, onclick, border
                         width: `${width - border}px`,
                         height: `${height - border}px`,
                     }}
-                    className="relative z-10 bg-bg-btn-dynamic rounded-xl flex items-center justify-center"
+                    className="relative z-10 bg-[#303032] rounded-xl flex items-center justify-center"
                 >
                     {value}
                 </span>

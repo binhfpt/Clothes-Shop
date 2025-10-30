@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion"
 import HeroSection from "@/components/admin/herosection";
 import CategoryHighlight from "@/components/admin/CategoryHighlight";
+import FindPerfectMatch from "@/components/admin/FindPerfectMatch";
 
 export default function Home() {
 
@@ -14,6 +15,8 @@ export default function Home() {
       <NavBar />
       <HeroSection />
       <CategoryHighlight />
+      <FindPerfectMatch />
+
     </div>
   )
 }
