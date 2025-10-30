@@ -41,14 +41,14 @@ const SaleUIHome = () => {
                         className={`p-2 rounded-full border-2 hover:border-btn-hv-bg text-gray-400 hover:text-bg-btn-dynamic ${currentIndex === 0 ? "opacity-40 cursor-not-allowed hover:border-2 hover:text-gray-400" : ""
                             }`}
                     >
-                        <ArrowLeft size={28} />
+                        <ArrowLeft className="cursor-pointer" size={28} />
                     </button>
                     <button
                         onClick={handleNext}
                         className={`p-2 rounded-full border-2 hover:border-btn-hv-bg text-gray-400 hover:text-bg-btn-dynamic ${currentIndex === maxIndex ? "opacity-40 cursor-not-allowed hover:border-2 hover:text-gray-400" : ""
                             }`}
                     >
-                        <ArrowRight size={28} />
+                        <ArrowRight className="cursor-pointer" size={28} />
                     </button>
                 </div>
             </h2>

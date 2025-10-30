@@ -23,7 +23,7 @@ const NavBar = ({ onDarkmode, initialDark = false }: NavBarProps) => {
         onDarkmode?.(isOn);
     }, [isOn, onDarkmode]);
     return (
-        <nav className="sticky top-0 py-1 bg-background shadow-md  dark:border-gray-700 z-50">
+        <nav className="w-full  top-0 py-2 bg-background shadow-md  dark:border-gray-700 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16 items-center">
                     <Link href="/" className="flex-shrink-0 text-xl font-bold text-bg-btn-dynamic">

@@ -365,7 +365,7 @@ const ProductAdminPage = () => {
 
 
             </div>
-            <div className='flex flex-wrap gap-3'>
+            <div className='flex flex-wrap gap-7'>
 
                 {finalData.length > 0 ? finalData.map((p: any) => (
                     <ProductCard key={p._id} product={p} />
