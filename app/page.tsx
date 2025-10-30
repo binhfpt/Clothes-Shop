@@ -6,6 +6,15 @@ import { motion } from "framer-motion"
 import HeroSection from "@/components/admin/herosection";
 import CategoryHighlight from "@/components/admin/CategoryHighlight";
 import FindPerfectMatch from "@/components/admin/FindPerfectMatch";
+import SaleUIHome from "@/components/SaleUIHome";
+import NewArrival from "@/components/NewArrival";
+import Teaching from "@/components/Teaching";
+import StartExploring from "@/components/StartExploring";
+import BestSeller from "@/components/BestSeller";
+import FindYourFavorProduct from "@/components/FindYourFavorProduct";
+import BrandofShop from "@/components/BrandofShop";
+import Blog from "@/components/Blog";
+import Comment from "@/components/Comment";
 
 export default function Home() {
 
@@ -16,7 +25,15 @@ export default function Home() {
       <HeroSection />
       <CategoryHighlight />
       <FindPerfectMatch />
-
+      <SaleUIHome />
+      <NewArrival />
+      <Teaching />
+      <StartExploring />
+      <BestSeller />
+      <FindYourFavorProduct />
+      <BrandofShop />
+      <Blog />
+      <Comment />
     </div>
   )
 }
