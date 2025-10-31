@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import useFetch from "@/app/hooks/useFetchData"
 import { ProductCard } from "./admin/ProductCard"
+import { Separator } from "./ui/separator"
 
 const CARD_WIDTH = 340 // px
 const GAP = 32 // = gap-8
@@ -78,6 +79,7 @@ const NewArrival = () => {
                     ))}
                 </div>
             </div>
+
         </div>
     )
 }
