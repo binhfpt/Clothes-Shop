@@ -5,15 +5,19 @@ type Props = {
     width: number,
     height: number,
     border: number,
-    onclick?: () => void
+    onclick?: () => void,
+    needHover?: boolean
 }
 
-export default function ButtonInvincible({ value, width, height, onclick, border }: Props) {
+
+
+export default function ButtonInvincible({ value, width, height, onclick, border, needHover }: Props) {
+
     return (
         <div className="relative flex justify-center items-center w-full" onClick={onclick}>
             <div
                 style={{ width: `${width}px`, height: `${height}px` }}
-                className="
+                className={`
           relative flex items-center justify-center
           font-semibold rounded-xl overflow-hidden
           text-gray-50 cursor-pointer
@@ -25,9 +29,9 @@ export default function ButtonInvincible({ value, width, height, onclick, border
           before:rounded-[inherit]
           before:z-0 before:opacity-0
           before:bg-[conic-gradient(at_50%_50%,transparent_0_18%,#527FE6_88%_92%,transparent_92%_100%)]
-          hover:before:opacity-80 hover:before:animate-[spin_3s_linear_infinite]
+          ${needHover ? "hover:before:opacity-80 hover:before:animate-[spin_3s_linear_infinite]" : "before:opacity-80 before:animate-[spin_3s_linear_infinite]"}
           transition-all duration-300
-        "
+         `}
             >
                 <span
                     style={{

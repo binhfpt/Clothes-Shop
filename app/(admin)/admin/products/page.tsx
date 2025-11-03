@@ -193,7 +193,7 @@ const ProductAdminPage = () => {
                                         </SelectGroup>
                                         <SelectGroup>
                                             <SelectLabel>Main Categories</SelectLabel>
-                                            {!categoryLoading && category.categories.length > 0 && category.categories.map((cate: any) => (
+                                            {!categoryLoading && category?.categories?.length > 0 && category.categories.map((cate: any) => (
                                                 <SelectItem key={cate._id} value={cate._id}>{cate.name}</SelectItem>
                                             ))}
 
@@ -231,7 +231,7 @@ const ProductAdminPage = () => {
                     </div>
                     <div className=''>
                         <div className='flex gap-3 flex-wrap'>
-                            {!subCategoryLoading && subCategory.categories.length > 0 ? (
+                            {!subCategoryLoading && subCategory?.categories?.length > 0 ? (
                                 subCategory.categories.map((ca: any) => (
                                     selectedCategory && ca.parent === selectedCategory ? <Button
                                         key={ca._id}

@@ -16,12 +16,13 @@ export async function POST(req: NextRequest) {
         //
         const check = await Category.findOne({ slug })
         if (check) {
-            return NextResponse.json({ message: "Already have this brand" }, { status: 409 })
+            return NextResponse.json({ message: "Already have this cate" }, { status: 409 })
         }
 
         const newCate = new Category({
             name: name,
             slug: slug,
+            amount: 0,
             description: description,
             parent: parent || null,
             isActive: true

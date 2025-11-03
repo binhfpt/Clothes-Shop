@@ -97,6 +97,7 @@ const Card = ({ percent, img, className = "" }: CardProps) => {
                     </h3>
                 </div>
                 <ButtonInvincible
+                    needHover={true}
                     onclick={() => alert("lol")}
                     border={8}
                     height={50}

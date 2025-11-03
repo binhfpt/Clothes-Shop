@@ -1,6 +1,10 @@
 import React from 'react'
 import { Badge } from '../ui/badge'
 import { StarRating } from './star-rating'
+import Image from 'next/image'
+import { useGetProductsQuery } from '@/app/redux/api/productAPI'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/redux/store/store'
 
 
 
@@ -11,19 +15,19 @@ export const ProductCard = ({ product }: { product: any }) => {
     const final_colors = raw_colors.map((rc: any) => {
         switch (rc) {
             case "red":
-                return "#ef4444"  // Tailwind red-500
+                return "#ef4444"
             case "blue":
-                return "#3b82f6"  // blue-500
+                return "#3b82f6"
             case "green":
-                return "#22c55e"  // green-500
+                return "#22c55e"
             case "black":
                 return "#000000"
             case "white":
                 return "#ffffff"
             case "yellow":
-                return "#eab308"  // yellow-500
+                return "#eab308"
             default:
-                return "#9ca3af"  // gray-400 fallback
+                return "#9ca3af"
         }
     })
 
@@ -33,14 +37,16 @@ export const ProductCard = ({ product }: { product: any }) => {
             {/* image here */}
             <div className='h-[60%] border-2 border-gray-100 p-0.5 rounded-3xl relative overflow-hidden group'>
                 {/* ảnh mặc định */}
-                <img
+                <Image
+                    fill
                     src={product?.images?.[0]}
                     alt='product'
                     className='object-cover rounded-3xl  w-full h-full transition-opacity duration-500 group-hover:opacity-0'
                 />
 
                 {/* ảnh khi hover */}
-                <img
+                <Image
+                    fill
                     src={product?.images?.[1] ?? product?.images?.[0]}
                     alt='product-hover'
                     className='object-cover w-full h-full absolute top-0 left-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100'

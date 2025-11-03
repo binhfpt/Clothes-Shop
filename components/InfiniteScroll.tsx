@@ -1,6 +1,7 @@
 "use client"
 import { animate, motion, useMotionValue } from "framer-motion"
 import { Plus } from "lucide-react"
+import Image from "next/image"
 import React, { useEffect } from "react"
 import useMeasure from "react-use-measure"
 
@@ -35,7 +36,9 @@ const InfiniteScroll = ({ data, vector }: { data: string[], vector: string }) =>
                         key={idx}
                         className="group relative h-[200px] w-[200px] shrink-0 overflow-hidden rounded-xl"
                     >
-                        <img
+                        <Image
+                            width={200}
+                            height={200}
                             src={item}
                             alt="product"
                             className="block h-full w-full object-cover"

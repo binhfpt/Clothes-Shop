@@ -15,22 +15,24 @@ import FindYourFavorProduct from "@/components/FindYourFavorProduct";
 import BrandofShop from "@/components/BrandofShop";
 import Blog from "@/components/Blog";
 import Comment from "@/components/Comment";
+import useFetch from "./hooks/useFetchData";
 
 export default function Home() {
-
 
   return (
     <div>
       <NavBar />
       <HeroSection />
+
       <CategoryHighlight />
+
       <FindPerfectMatch />
+      <FindYourFavorProduct />
       <SaleUIHome />
       <NewArrival />
       <Teaching />
       <StartExploring />
-      <BestSeller />
-      <FindYourFavorProduct />
+      {/* <BestSeller /> */}
       <BrandofShop />
       <Blog />
       <Comment />

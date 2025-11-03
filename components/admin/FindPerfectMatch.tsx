@@ -44,16 +44,11 @@ const FindPerfectMatch = () => {
                     </motion.div>
                 </div> */}
                 <InfiniteScroll vector='left_to_right' data={data} />
-
                 <motion.h1
                     className="text-5xl font-bold font-satoshi mt-20 text-gray-600 tracking-tight leading-[1.1]"
                 >
                     Find Your
                 </motion.h1>
-
-
-
-
                 <div className="flex gap-3 mt-2 mb-20">
                     <motion.h2 className="text-6xl font-semibold text-gray-600 font-satoshi leading-[1.2]">
                         Perfect
@@ -62,12 +57,7 @@ const FindPerfectMatch = () => {
                         Match
                     </motion.h2>
                 </div>
-
                 <InfiniteScroll vector='right_to_left' data={data} />
-
-
-
-
             </div>
 
         </div>

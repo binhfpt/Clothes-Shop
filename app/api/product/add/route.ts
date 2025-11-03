@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/app/dbConfig/dbConfig";
 import Brand from "@/app/models/brand"; // model JS bạn đưa ở trên dùng OK trong TS
 import Product from "@/app/models/product"
-import product from "@/app/models/product";
+import Category from "@/app/models/category";
 // Nếu bạn muốn chạy trên edge, bỏ comment dòng dưới
 // export const runtime = "nodejs";
 connect();
@@ -79,6 +79,29 @@ export async function POST(req: NextRequest) {
             seoTitle: body.seoTitle || "",
             seoDescription: body.seoDescription || "",
         });
+        if (newProduct) {
+            await Brand.findByIdAndUpdate(
+                body.brand,
+                { $inc: { amount: 1 } },
+                { new: true, upsert: false }
+            )
+            await Category.findByIdAndUpdate(
+                body.category,
+                { $inc: { amount: 1 } },
+                { new: true, upsert: false }
+            )
+
+            if (Array.isArray(body.categories)) {
+                for (const id of body.categories) {
+                    await Category.findByIdAndUpdate(
+                        id,
+                        { $inc: { amount: 1 } },
+                        { new: true, upsert: false }
+                    )
+                }
+            }
+        }
+
 
         return NextResponse.json(
             {

@@ -7,7 +7,8 @@ const BrandSchema = new mongoose.Schema(
         // description
         slug: { type: String, required: true, unique: true, lowercase: true },
         logo: { type: String },
-        isActive: { type: Boolean, default: true }
+        isActive: { type: Boolean, default: true },
+        amount: { type: Number, default: 0 }
     },
     { timestamps: true }
 );

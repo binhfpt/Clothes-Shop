@@ -4,15 +4,17 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 import useFetch from "@/app/hooks/useFetchData"
 import { ProductCard } from "./admin/ProductCard"
 import { Separator } from "./ui/separator"
+import { useGetProductsQuery } from "@/app/redux/api/productAPI"
 
-const CARD_WIDTH = 340 // px
+const CARD_WIDTH = 348 // px
 const GAP = 32 // = gap-8
 
 const NewArrival = () => {
-    const { data, error, loading } = useFetch("/api/product", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-    })
+    // const { data, error, loading } = useFetch("/api/product", {
+    //     method: "GET",
+    //     headers: { "Content-Type": "application/json" },
+    // })
+    const { data, error, isLoading } = useGetProductsQuery();
 
     const [currentIndex, setCurrentIndex] = useState(0)
     const visibleCount = 4
@@ -23,7 +25,7 @@ const NewArrival = () => {
 
     const translateX = -(currentIndex * (CARD_WIDTH + GAP))
 
-    if (loading) return <div>Loading...</div>
+    if (isLoading) return <div>Loading...</div>
     if (error) return <div>Error loading products</div>
     if (!data?.products) return <div>No products found</div>
 

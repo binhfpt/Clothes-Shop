@@ -20,8 +20,8 @@ const Teaching = () => {
                 </g>
                 <path d="M1345.5 4.51953C1391.67 23.1862 1501.1 60.5195 1569.5 60.5195C1637.9 60.5195 1838.33 23.1862 1930 4.51953C2037 -1.14713 2255.9 -5.18047 2275.5 24.0195C2295.1 53.2195 2520.67 23.1862 2631 4.51953" strokeDasharray="10 10" stroke="black" />
                 <defs>
-                    <filter id="filter0_d_0_1" x="-2.68742" y="0.000976562" width="1293.77" height="69.0186" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <filter id="filter0_d_0_1" x="-2.68742" y="0.000976562" width="1293.77" height="69.0186" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                        <feFlood floodOpacity="0" result="BackgroundImageFix" />
                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                         <feOffset dy="4" />
                         <feGaussianBlur stdDeviation="2" />
@@ -31,11 +31,11 @@ const Teaching = () => {
                         <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_1" result="shape" />
                     </filter>
                     <linearGradient id="paint0_linear_0_1" x1="644.25" y1="0.5" x2="644.25" y2="60.5195" gradientUnits="userSpaceOnUse">
-                        <stop stop-opacity="0" />
+                        <stop stopOpacity="0" />
                         <stop offset="1" />
                     </linearGradient>
                     <linearGradient id="paint1_linear_0_1" x1="1988.25" y1="0.5" x2="1988.25" y2="60.5195" gradientUnits="userSpaceOnUse">
-                        <stop stop-opacity="0" />
+                        <stop stopOpacity="0" />
                         <stop offset="1" />
                     </linearGradient>
                 </defs>
