@@ -51,7 +51,7 @@ const StartExploring = () => {
     if ((cate && cate?.categories?.length === 0) || (sub && sub?.categories?.length === 0)) return <NoDataFound />
 
     return (
-        <div className=' flex flex-col gap-10 items-center justify-center bg-gray-100'>
+        <div className=' flex flex-col gap-10 items-center justify-center bg-blue-50'>
             <div className='text-gray-800 w-full mt-25 text-center font-bold font-satoshi text-5xl'>
                 Start Shopping.
             </div>

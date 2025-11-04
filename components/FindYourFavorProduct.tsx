@@ -23,6 +23,8 @@ const FindYourFavorProduct = () => {
     const selectedColor = useSelector((state: RootState) => state.color.selectedColors)
     const selectedSubCategory = useSelector((state: RootState) => state.subCategory.selectedSubCategories)
     const selectedBrand = useSelector((state: RootState) => state.brand.selectedBrands)
+    const { rating, price, selectedTag } = useSelector((state: RootState) => state.advancedFilter)
+    const selectedSort = useSelector((state: RootState) => state.sortproducts.selectedSortProducts)
 
     const handleCheckArraytoArray = (arr1: string[] = [], arr2: string[] = []): boolean => {
         return arr1.some(e => arr2.includes(e))
@@ -42,9 +44,25 @@ const FindYourFavorProduct = () => {
                 product.variants?.some((v: any) => selectedColor.includes(v.color.toLowerCase()))
             )
         }
+        if (rating > 0) rtnData = rtnData.filter((e) => Math.ceil(e.ratingAvg) === rating)
 
+        if (selectedTag.length > 0 && selectedTag.includes("new")) {
+            rtnData = rtnData.filter((c: any) => c.isNew === true)
+        }
+        if (selectedTag.length > 0 && selectedTag.includes("inStock")) {
+            rtnData = rtnData.filter((c: any) => c.stock > 0)
+        }
+        rtnData = rtnData.filter((e) => e.price >= price[0] && e.price <= price[1])
+        if (selectedSort === "price-asc") rtnData.sort((a, b) => a.price - b.price)
+        if (selectedSort === "price-desc") rtnData.sort((a, b) => b.price - a.price)
+        if (selectedSort === "date-desc") {
+            rtnData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        }
+        if (selectedSort === "date-asc") {
+            rtnData.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+        }
         return rtnData
-    }, [data, data?.products, selectedMainCategory, debouncedSearch, selectedBrand, selectedSubCategory, selectedColor])
+    }, [data, data?.products, selectedMainCategory, debouncedSearch, selectedBrand, selectedSubCategory, selectedColor, rating, price, selectedTag, selectedSort])
 
     if (isLoading) return <LoadingBig />
     if (error) return <div>Error loading products</div>

@@ -6,7 +6,8 @@ import { brandAPI } from '../api/brandAPI'
 import colorSlice from "../slice/product/colorSelected"
 import brandSlice from "../slice/brand/brandSelected"
 import subCategorySlice from "../slice/subcategory/subcategoriesSelected"
-
+import advancedFilterSlice from "../slice/product/advancedFilter"
+import sortProductsSlice from "../slice/product/sortSlice"
 export const store = configureStore({
     reducer: {
         [productApi.reducerPath]: productApi.reducer,
@@ -14,8 +15,10 @@ export const store = configureStore({
         [subcategoryAPI.reducerPath]: subcategoryAPI.reducer,
         [brandAPI.reducerPath]: brandAPI.reducer,
 
+        advancedFilter: advancedFilterSlice,
         category: categorySlice,
         color: colorSlice,
+        sortproducts: sortProductsSlice,
         subCategory: subCategorySlice,
         brand: brandSlice
     },

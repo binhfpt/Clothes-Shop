@@ -23,11 +23,11 @@ export default function Home() {
     <div>
       <NavBar />
       <HeroSection />
-
+      <FindYourFavorProduct />
       <CategoryHighlight />
 
       <FindPerfectMatch />
-      <FindYourFavorProduct />
+
       <SaleUIHome />
       <NewArrival />
       <Teaching />

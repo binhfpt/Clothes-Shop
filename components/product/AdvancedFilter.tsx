@@ -6,15 +6,21 @@ import { Button } from '../ui/button'
 import { DialogHeader, DialogFooter, Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '../ui/dialog'
 import { Label } from '../ui/label'
 import { Slider } from '../ui/slider'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/app/redux/store/store'
+import { resetAdvancedFilter, setAdvancedFilter } from '@/app/redux/slice/product/advancedFilter'
 
 const AdvancedFilter = () => {
     const [openFilter, setOpenFilter] = useState(false)
-    const [rating, setRating] = useState(0)
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]) // [min, max]
-    const [selectedAdvancedFilter, setSelectedAdvancedFilter] = useState<any>([])
+    // const [rating, setRating] = useState(0)
+    // const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000])
+    // const [selectedAdvancedFilter, setSelectedAdvancedFilter] = useState<any>([])
+
+    const { rating, price, selectedTag } = useSelector((state: RootState) => state.advancedFilter)
+    const dispatch = useDispatch()
 
     //sort
-    const [sortType, setSortType] = useState("date-desc")
+    // const [sortType, setSortType] = useState("date-desc")
 
     // const [brand,setBrand] = useState()
     // const [category,setCategory] = useState()
@@ -22,12 +28,11 @@ const AdvancedFilter = () => {
 
     function handleClear(): void {
         setOpenFilter(false)
-        setRating(0)
-        setPriceRange([0, 1000])
-        setSelectedAdvancedFilter([])
-
+        dispatch(resetAdvancedFilter())
+        // setRating(0)
+        // setPriceRange([0, 1000])
+        // setSelectedAdvancedFilter([])
     }
-
 
     return (
         <Tooltip >
@@ -52,10 +57,10 @@ const AdvancedFilter = () => {
                         <div className="flex flex-col">
                             <Label className='text-gray-600'>Rating<p className='text-red-400 text-xl'>*</p></Label>
                             <div className="flex items-center  gap-1 ml-2 mt-2">
-                                <StarOff size={24} className='text-red-300 cursor-pointer mr-2 ' onClick={(e) => setRating(0)} />
+                                <StarOff size={24} className='text-red-300 cursor-pointer mr-2 ' onClick={(e) => dispatch(setAdvancedFilter({ type: "rating", value: 0 }))} />
                                 {Array.from({ length: 5 }, (_, i) => (
                                     <Star
-                                        onClick={(e) => setRating(i + 1)}
+                                        onClick={() => dispatch(setAdvancedFilter({ type: "rating", value: ++i }))}
                                         key={i}
                                         size={24}
                                         className={i < rating ? "fill-invincible-yellow text-invincible-yellow cursor-pointer" : "text-gray-300 cursor-pointer"}
@@ -72,43 +77,44 @@ const AdvancedFilter = () => {
                                 defaultValue={[0, 1000]}
                                 max={1000}
                                 step={1}
-                                value={priceRange}
-                                onValueChange={(val) => setPriceRange(val as [number, number])}
+                                value={[price[0], price[1]]}
+                                onValueChange={(val) => dispatch(setAdvancedFilter({ value: (val as [number, number]), type: "price" }))}
                             />
                             <div className="flex justify-between text-sm text-gray-500">
-                                <span>{priceRange[0].toLocaleString()}$</span>
-                                <span>{priceRange[1].toLocaleString()}$</span>
+                                <span>{price[0].toLocaleString()}$</span>
+                                <span>{price[1].toLocaleString()}$</span>
                             </div>
                         </div>
                         <div className="flex flex-col gap-3">
                             <Label className="text-gray-600">Product <p className='text-red-400 text-xl'>*</p></Label>
                             <div className='flex gap-3'>
                                 <Button
-                                    className={`${selectedAdvancedFilter.includes("new")
+                                    className={`${selectedTag.includes("new")
                                         ? "bg-bg-btn-dynamic text-gray-50"
                                         : "bg-gray-100 text-gray-500"
                                         } hover:bg-btn-hv-bg hover:text-gray-50 cursor-pointer`}
                                     type="button"
-                                    onClick={(e) => setSelectedAdvancedFilter((prev: any) => {
+                                    onClick={(e) =>
+                                        dispatch(setAdvancedFilter({
+                                            type: "selectedTag",
+                                            value: "new"
+                                        }))
+                                    } >
+                                    New
+                                    {/* ((prev: any) => {
                                         const alreadySelected = prev.includes("new")
                                         if (alreadySelected) {
                                             return prev.filter((id: any) => id !== "new")
                                         } else return [...prev, "new"]
-                                    })}                                    >
-                                    New
+                                    }) */}
                                 </Button>
                                 <Button
-                                    className={`${selectedAdvancedFilter.includes("inStock")
+                                    className={`${selectedTag.includes("inStock")
                                         ? "bg-bg-btn-dynamic text-gray-50"
                                         : "bg-gray-100 text-gray-500"
                                         } hover:bg-btn-hv-bg hover:text-gray-50 cursor-pointer`}
                                     type="button"
-                                    onClick={(e) => setSelectedAdvancedFilter((prev: any) => {
-                                        const alreadySelected = prev.includes("inStock")
-                                        if (alreadySelected) {
-                                            return prev.filter((id: any) => id !== "inStock")
-                                        } else return [...prev, "inStock"]
-                                    })}                                    >
+                                    onClick={(e) => dispatch(setAdvancedFilter({ value: "inStock", type: "selectedTag" }))}                                    >
                                     In Stock
                                 </Button>
                             </div>
