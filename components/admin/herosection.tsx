@@ -6,7 +6,7 @@ import { Eye } from 'lucide-react'
 
 const HeroSection = () => {
     return (
-        <div className="bg-blue-50 bg-center text-start flex w-full relative h-screen">
+        <div id='herosection' className="bg-blue-50 bg-center text-start flex w-full relative h-screen">
             <img
                 src="/pic/pexels-kowalievska-1127000.jpg"
                 alt="background"

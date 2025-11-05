@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button'
 import React from 'react'
-import { ArrowRight, UserIcon, Shirt, Store, GalleryHorizontalEnd, TicketSlash } from "lucide-react";
+import { ArrowRight, UserIcon, Shirt, Store, GalleryHorizontalEnd, TicketSlash, Newspaper } from "lucide-react";
 import Link from 'next/link';
 
 const dashData = [
@@ -47,6 +47,14 @@ const dashData = [
         webName: "@Inv1nc1ble",
         link: "/admin/voucher",
     },
+    {
+        name: "Blogs",
+        description: "Manage all blogs",
+        icon: Newspaper,
+        arrowIcon: ArrowRight,
+        webName: "@Inv1nc1ble",
+        link: "/admin/blogs",
+    },
 
     // ... các mục khác giữ nguyên
 ]
@@ -56,7 +64,7 @@ const dashData = [
 
 const AdminDashboard = () => {
     return (
-        <div className="ml-10 flex flex-wrap gap-x-6 gap-y-6">
+        <div className="ml-10 flex pb-100 flex-wrap gap-x-6 gap-y-6">
             {dashData.map(({ name, description, icon: Icon, arrowIcon: ArrowIcon, webName, link }, index) => (
                 <Tooltip key={link}>
                     <TooltipTrigger asChild>

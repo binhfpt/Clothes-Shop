@@ -14,13 +14,12 @@ import {
     SidebarMenuSkeleton,
     SidebarSeparator,
 } from "@/components/ui/sidebar"; // cập nhật path theo dự án bạn
-import { HomeIcon, PackageIcon, UserIcon, Shirt, Store, GalleryHorizontalEnd, TicketSlash } from "lucide-react";
+import { HomeIcon, PackageIcon, UserIcon, Shirt, Store, GalleryHorizontalEnd, TicketSlash, Newspaper } from "lucide-react";
 import { Input } from "../ui/input";
 import { Settings, LogOut, User } from "lucide-react"
 import { NavUser } from "./nav-user";
 import GetDataFromToken from "@/app/helpers/getDataFromToken";
 import { url } from "inspector";
-
 
 const sidebarItems = [
     { name: "Dashboard", url: "/admin", icon: HomeIcon },
@@ -29,7 +28,7 @@ const sidebarItems = [
     { name: "Brands", url: "/admin/brand", icon: Store },
     { name: "Categories", url: "/admin/category", icon: GalleryHorizontalEnd },
     { name: "Vouchers", url: "/admin/voucher", icon: TicketSlash },
-
+    { name: "blogs", url: "/admin/blogs", icon: Newspaper },
 ];
 const sidebarItems2 = [
     { name: "Temp1", url: "/admin", icon: HomeIcon },
