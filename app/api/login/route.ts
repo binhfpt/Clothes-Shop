@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
         }
         const tokenPayload = {
             id: checkUserExist._id,
-            username: checkUserExist.username,
+            role: checkUserExist.role,
             email: checkUserExist.email
         }
 

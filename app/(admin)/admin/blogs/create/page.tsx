@@ -26,13 +26,21 @@ import { ImageUploadButton } from '@/components/tiptap-ui/image-upload-button'
 import { ImageUploadNode } from '@/components/tiptap-node/image-upload-node'
 import { handleImageUpload, MAX_FILE_SIZE } from '@/lib/tiptap-utils'
 import { BlockquoteButton } from '@/components/tiptap-ui/blockquote-button'
+import { useCreateblogMutation } from "@/app/redux/api/blogAPI"
+import toast from "react-hot-toast"
+import { useCreateImageMutation } from "@/app/redux/api/imageAPI"
 
 const CreateBlog = () => {
+    const [createBlog] = useCreateblogMutation()
+    const [createImage] = useCreateImageMutation()
+
+    const [prevImg, setPrevImg] = useState<any>(null)
+    const [dbImg, setDbImg] = useState(null)
+    const [uploadImg, setUpLoadImg] = useState<any>(null)
 
     const [form, setForm] = useState({
         title: "",
         tag: "",
-        thumbnail: "",
         description: ""
     })
 
@@ -59,6 +67,13 @@ const CreateBlog = () => {
         }
     })
 
+    const handleUpLoadThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+        const previewURL = URL.createObjectURL(file) // 
+        setUpLoadImg(file)
+        setPrevImg(previewURL)
+    }
 
 
     const handleFocus = (e: React.MouseEvent) => {
@@ -74,16 +89,42 @@ const CreateBlog = () => {
     }
 
     const handleCreateBlog = async () => {
-        const html = editor?.getHTML()
-        await fetch('/api/posts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: html }),
-        })
-        // body: JSON.stringify({ content: html }),
-        console.log(html)
-
+        try {
+            const html = editor?.getHTML()
+            if (uploadImg) {
+                const imgres = await createImage(uploadImg).unwrap()
+                if (imgres.secure_url) {
+                    const res = await createBlog({ html, blogform: form, imgUrl: imgres.secure_url, type: "published" }).unwrap()
+                    toast.success('Save successfully!', {
+                        duration: 2000,
+                        style: {
+                            boxShadow: 'none',
+                            background: '#a3ffbc',
+                        },
+                    })
+                }
+                else {
+                    toast.error('Error creating image', {
+                        duration: 2000,
+                        style: {
+                            boxShadow: 'none',
+                            background: '#ff6b6b',
+                        },
+                    })
+                }
+            }
+        } catch (error) {
+            console.error('Create blog failed:', error)
+            toast.error('Error creating blog', {
+                duration: 2000,
+                style: {
+                    boxShadow: 'none',
+                    background: '#ff6b6b',
+                },
+            })
+        }
     }
+
 
     const handleInputChange = (e: any) => {
         setForm((prev) => ({
@@ -93,7 +134,7 @@ const CreateBlog = () => {
     }
 
     return (
-        <div className=' text-start pl-10 pt-5 justify-center max-w-full flex flex-col overflow-x-hidden pr-15 pb-50'>
+        <div id="createblog" className=' text-start pl-10 pt-5 justify-center max-w-full flex flex-col overflow-x-hidden pr-15 pb-50'>
             <h2 className='text-neutral-800 font-satoshi  mb-1'>Create a New Blog</h2>
 
             <input
@@ -125,23 +166,26 @@ const CreateBlog = () => {
                         </SelectContent>
                     </Select>
                 </div>
-                <div className=' border-2 border-bg-btn-dynamic  p-2 gap-2 rounded-xl cursor-pointer text-btn-hv-bg flex font-sans font-semibold '>
+                <label className=' border-2 border-bg-btn-dynamic  p-2 gap-2 rounded-xl cursor-pointer text-btn-hv-bg flex font-sans font-semibold '>
+                    <input type="file" multiple accept="image/*" className="hidden" onChange={handleUpLoadThumbnail} />
                     <ImagePlus />
                     Thumbnail
-                </div>
+                </label>
+
                 <Popover>
                     <PopoverTrigger asChild>
                         <Button variant="outline" className='border-2 border-gray-300 text-gray-400 cursor-pointer'>Show Thumbnail</Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-80">
-                        <Image
-                            src="/pic/pexels-anna-nekrashevich-8532616.jpg"
+                        {prevImg ? <Image
+                            src={prevImg}
                             alt="banner"
                             width={0}
                             height={0}
                             sizes="100vw"
                             className="w-full h-auto object-cover"
-                        />
+                        /> : <div>Null.</div>}
+
 
                     </PopoverContent>
                 </Popover>
@@ -152,7 +196,7 @@ const CreateBlog = () => {
                 onChange={handleInputChange}
                 name="description"
                 value={form.description}
-                placeholder='Description here...' className='border-2 mb-5 text-neutral-800 pl-3 pt-1 text-xl w-full bg-[#ffffff] focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-300 rounded-sm h-[70px] border-neutral-300' />
+                placeholder='Description here...' className='border-2 mb-5 text-neutral-800 pl-3 pt-1 w-full bg-[#ffffff] focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-300 rounded-sm h-[70px] border-neutral-300' />
             {editor && (
                 <EditorContext.Provider value={{ editor }} >
 

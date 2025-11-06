@@ -38,6 +38,5 @@ const BlogSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-BlogSchema.index({ slug: 1 }, { unique: true });
 
-export default mongoose.models.Blog || mongoose.model("blog", BlogSchema);
+export default mongoose.models.blog || mongoose.model("blog", BlogSchema);
