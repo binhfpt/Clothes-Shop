@@ -30,7 +30,7 @@ const NewArrival = () => {
     if (!data?.products) return <div>No products found</div>
 
     return (
-        <div className="bg-white h-screen pl-10 -mt-24 overflow-hidden">
+        <div id="NewArrival" className="bg-white h-screen pl-10 -mt-24 overflow-hidden">
             <h2 className="text-gray-700  flex items-center relative h-[12%] font-semibold mb-10 font-satoshi text-4xl">
                 New Products.
                 <span className="ml-2 text-gray-400">New more clothes</span>

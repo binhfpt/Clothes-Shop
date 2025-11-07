@@ -53,7 +53,7 @@ const BrandofShop = () => {
     if (!data || data.brands.length === 0) return <NoDataFound />
 
     return (
-        <div className="bg-white h-screen overflow-hidden pl-10 pr-10 pt-10">
+        <div id='BrandofShop' className="bg-white h-screen overflow-hidden pl-10 pr-10 pt-10">
             <h2 className="text-gray-700 flex items-center relative h-[12%] font-semibold mb-15 font-satoshi text-4xl">
                 Choose Your Favorite Brand.
                 <div className="flex gap-3 absolute right-0 top-0 h-full items-center w-[15%] justify-center">

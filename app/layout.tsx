@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` antialiased bg-[linear-gradient(to_bottom,var(--primary),var(--secondary))] min-h-screen`}
+        id="layout" className={` antialiased bg-[linear-gradient(to_bottom,var(--primary),var(--secondary))] min-h-screen`}
       ><Toaster>
         </Toaster>
         <Providers>

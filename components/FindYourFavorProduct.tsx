@@ -68,7 +68,7 @@ const FindYourFavorProduct = () => {
     if (error) return <div>Error loading products</div>
     if (!data?.products) return <NoDataFound />
     return (
-        <div className='bg-white flex flex-col pl-10 pr-10 pt-15'>
+        <div id='FindYourFavorProduct' className='bg-white flex flex-col pl-10 pr-10 pt-15'>
             {/* TITLE */}
             <h2 className="text-gray-700  flex items-center relative h-[12%] font-semibold mb-10 font-satoshi text-4xl">
                 Discover and Shopping Now.

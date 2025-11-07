@@ -10,7 +10,7 @@ const data = [
 
 const Teaching = () => {
     return (
-        <div className='h-screen bg-white relative overflow-hidden  pt-18'>
+        <div id='Teaching' className='h-screen bg-white relative overflow-hidden  pt-18'>
             <svg width="1719" height="70" viewBox="0 0 1719 70" fill="none" className='absolute mt-30 z-0 opacity-15' xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_d_0_1)">
                     <path d="M1.5 4.51953C47.6667 23.1862 157.1 60.5195 225.5 60.5195C293.9 60.5195 494.333 23.1862 586 4.51953C693 -1.14713 911.9 -5.18047 931.5 24.0195C951.1 53.2195 1176.67 23.1862 1287 4.51953" stroke="black" strokeDasharray="10 10" />

@@ -31,7 +31,7 @@ const SaleUIHome = () => {
     const translateX = -(currentIndex * (CARD_WIDTH + GAP))
 
     return (
-        <div className="bg-white h-screen pl-10 pt-10">
+        <div id="SaleUIHome" className="bg-white h-screen pl-10 pt-10">
             <h2 className="text-gray-700 flex items-center relative h-[12%] font-semibold mb-15 font-satoshi text-4xl">
                 Sale Collection.
                 <span className="ml-2 text-gray-400">Discover limited-time offers</span>

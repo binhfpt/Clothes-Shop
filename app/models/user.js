@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import "./user";
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -18,7 +18,6 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "pls provide password"],
-        unique: true
     },
     isVerified: {
         type: Boolean,
@@ -32,12 +31,15 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "customer"
     },
+    avatar: {
+        type: String
+    },
     forgotPasswordLink: String,
     forgotPasswordLinkExpiry: Date,
     verifyToken: String,
     verifyTokenExpiry: Date
 })
 
-const User = mongoose.models.users || mongoose.model("users", UserSchema);
+const User = mongoose.models.User || mongoose.model("User", UserSchema);
 
 export default User

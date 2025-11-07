@@ -118,7 +118,7 @@ const CategoryHighlight = () => {
 
 
     return (
-        <div ref={containerRef} className="relative bg-background min-h-screen">
+        <div id="CategoryHighlight" ref={containerRef} className="relative bg-background min-h-screen">
             {/* SVG có mt-40 thoải mái; getScreenCTM vẫn cho đúng */}
             <svg
                 ref={svgRef}

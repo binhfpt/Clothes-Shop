@@ -1,9 +1,9 @@
 // models/Blog.js
 import mongoose, { Schema } from "mongoose";
-
+import "./user";
 const BlogSchema = new mongoose.Schema(
     {
-        author: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+        author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         title: { type: String, required: true, trim: true, unique: true },
         subTitle: { type: String, trim: true },
         content: { type: String, required: true },
@@ -39,4 +39,5 @@ const BlogSchema = new mongoose.Schema(
 );
 
 
-export default mongoose.models.blog || mongoose.model("blog", BlogSchema);
+const Blog = mongoose.models.Blog || mongoose.model("Blog", BlogSchema);
+export default Blog;

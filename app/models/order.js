@@ -31,7 +31,7 @@ const AddressSchema = new mongoose.Schema(
 
 const OrderSchema = new mongoose.Schema(
     {
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 
         items: { type: [OrderItemSchema], required: true },
         subtotal: { type: Number, required: true, min: 0 },

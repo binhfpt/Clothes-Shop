@@ -1,19 +1,22 @@
+// app/api/blog/route.ts
 import { connect } from "@/app/dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
-import blog from "@/app/models/blog";
+import User from "@/app/models/user";
 
-connect()
+import Blog from "@/app/models/blog";
+
+connect();
 
 export async function GET(request: NextRequest) {
     try {
-        const blogs = await blog.find()
-        if (!blogs) {
-            return NextResponse.json({ message: "Have no blog here" }, { status: 400 })
-        }
-        const res = NextResponse.json({ blogs, success: true }, { status: 200 })
+        const blogs = await Blog.find().populate("author", "username email avatar");
 
-        return res
+        if (!blogs || blogs.length === 0) {
+            return NextResponse.json({ message: "Have no blog here" }, { status: 400 });
+        }
+
+        return NextResponse.json({ blogs, success: true }, { status: 200 });
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

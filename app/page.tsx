@@ -20,7 +20,7 @@ import useFetch from "./hooks/useFetchData";
 export default function Home() {
 
   return (
-    <div>
+    <div className="flex flex-col">
       <NavBar />
       <HeroSection />
       <FindYourFavorProduct />
