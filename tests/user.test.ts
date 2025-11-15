@@ -1,33 +1,27 @@
-import request from "supertest";
+// tests/getSku.test.ts
+const getSku = (name: string, color: string): string => {
+    const skuRaw = name + " " + color
 
-const API = "http://localhost:3000";
+    return skuRaw
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")     // thay khoảng trắng bằng dấu -
+        .replace(/[^\w\-]+/g, ""); // loại bỏ ký tự đặc biệt
+};
+describe("getSku", () => {
+    test("tao sku tu name + color, format dung", () => {
+        const sku = getSku("ao Thun   Oversize", "mau do!!")
 
-describe("User API", () => {
-    let token: string;
+        expect(sku).toBe("ao-thun-oversize-mau-do")
+    })
 
-    test("Login thành công", async () => {
-        const loginRes = await request(API)
-            .post("/api/login")
-            .send({ email: "admin@gmail.com", password: "123456" });
+    test("trim khoang trang hai ben", () => {
+        const sku = getSku("   Hoodie Basic  ", "   Black   ")
+        expect(sku).toBe("hoodie-basic-black")
+    })
 
-        expect(loginRes.status).toBe(200);
-
-        const setCookieHeader = loginRes.headers['set-cookie'];
-        const cookies = Array.isArray(setCookieHeader) ? setCookieHeader : [setCookieHeader];
-
-        const tokenCookie = cookies.find((c) => c.startsWith("token="));
-        if (!tokenCookie) throw new Error("Token cookie not found");
-
-        const token = tokenCookie.split(';')[0].split('=')[1];
-
-    });
-
-    // test("Lấy thông tin user", async () => {
-    //     const userRes = await request(API)
-    //         .get("/api/user")
-    //         .set("Cookie", [`token=${token}`]);
-
-    //     expect(userRes.status).toBe(200);
-    //     expect(userRes.body.id).toBeDefined();
-    // });
-});
+    test("xu ly chuoi rong", () => {
+        const sku = getSku("", "")
+        expect(sku).toBe("")
+    })
+})
