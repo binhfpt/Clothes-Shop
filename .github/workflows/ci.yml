@@ -26,5 +26,14 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Install wait-on
+        run: npm install -g wait-on
+
+      - name: Start server
+        run: npm run start &    
+
+      - name: Wait for server ready
+        run: npx wait-on http://localhost:3000  
+
       - name: Run tests
         run: npm test
