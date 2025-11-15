@@ -291,9 +291,9 @@ export function useColorHighlight(config: UseColorHighlightConfig) {
 
       return true
     } else {
-      const success = editor
+      const success = (editor
         .chain()
-        .focus()
+        .focus() as any)
         .toggleNodeBackgroundColor(highlightColor)
         .run()
 
