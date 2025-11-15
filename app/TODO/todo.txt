@@ -2,3 +2,12 @@
 2. Rate Limiting
 3. MIDDLEWARE
 4. SEO
+
+
+
+//////
+today:
+1.view individual product page
+
+later:
+1. view blog -> increase viewer by their token session

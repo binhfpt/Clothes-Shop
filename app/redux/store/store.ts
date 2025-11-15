@@ -10,6 +10,7 @@ import subCategorySlice from "../slice/subcategory/subcategoriesSelected"
 import advancedFilterSlice from "../slice/product/advancedFilter"
 import sortProductsSlice from "../slice/product/sortSlice"
 import { blogAPI } from '../api/blogAPI'
+import { meAPI } from '../api/meAPI'
 export const store = configureStore({
     reducer: {
         [productApi.reducerPath]: productApi.reducer,
@@ -18,6 +19,8 @@ export const store = configureStore({
         [brandAPI.reducerPath]: brandAPI.reducer,
         [imageAPI.reducerPath]: imageAPI.reducer,
         [blogAPI.reducerPath]: blogAPI.reducer,
+        [meAPI.reducerPath]: meAPI.reducer,
+
         advancedFilter: advancedFilterSlice,
         category: categorySlice,
         color: colorSlice,
@@ -27,7 +30,7 @@ export const store = configureStore({
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(productApi.middleware).concat(categoryAPI.middleware).concat(subcategoryAPI.middleware)
-            .concat(brandAPI.middleware).concat(imageAPI.middleware).concat(blogAPI.middleware),
+            .concat(brandAPI.middleware).concat(imageAPI.middleware).concat(blogAPI.middleware).concat(meAPI.middleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>
