@@ -82,7 +82,7 @@ const CreateBlog = () => {
             console.warn("Editor not ready yet")
             return
         }
-        editor.chain().focus().run()
+        (editor.chain().focus() as any).run()
 
         // const dom = editor.view?.dom
         // if (dom && typeof dom.focus === "function") dom.focus()

@@ -108,7 +108,7 @@ export function setTextAlign(editor: Editor | null, align: TextAlign): boolean {
   if (!editor || !editor.isEditable) return false
   if (!canSetTextAlign(editor, align)) return false
 
-  const chain = editor.chain().focus()
+  const chain = (editor.chain().focus() as any)
   if (hasSetTextAlign(chain)) {
     return chain.setTextAlign(align).run()
   }

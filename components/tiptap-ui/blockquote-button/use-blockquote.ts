@@ -104,7 +104,7 @@ export function toggleBlockquote(editor: Editor | null): boolean {
 
     const selection = state.selection
 
-    let chain = editor.chain().focus()
+    let chain = (editor.chain().focus() as any)
 
     // Handle NodeSelection
     if (selection instanceof NodeSelection) {
@@ -133,7 +133,7 @@ export function toggleBlockquote(editor: Editor | null): boolean {
 
     toggle.run()
 
-    editor.chain().focus().selectTextblockEnd().run()
+      (editor.chain().focus() as any).selectTextblockEnd().run()
 
     return true
   } catch {

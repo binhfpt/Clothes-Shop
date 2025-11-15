@@ -200,9 +200,9 @@ export function removeHighlight(
   if (!canColorHighlight(editor, mode)) return false
 
   if (mode === "mark") {
-    return editor.chain().focus().unsetMark("highlight").run()
+    return (editor.chain().focus() as any).unsetMark("highlight").run()
   } else {
-    return editor.chain().focus().unsetNodeBackgroundColor().run()
+    return (editor.chain().focus() as any).unsetNodeBackgroundColor().run()
   }
 }
 

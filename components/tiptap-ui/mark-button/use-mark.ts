@@ -96,7 +96,7 @@ export function toggleMark(editor: Editor | null, type: Mark): boolean {
   if (!editor || !editor.isEditable) return false
   if (!canToggleMark(editor, type)) return false
 
-  return editor.chain().focus().toggleMark(type).run()
+  return (editor.chain().focus() as any).toggleMark(type).run()
 }
 
 /**

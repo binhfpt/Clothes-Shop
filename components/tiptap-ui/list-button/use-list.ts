@@ -165,7 +165,7 @@ export function toggleList(editor: Editor | null, type: ListType): boolean {
 
     const selection = state.selection
 
-    let chain = editor.chain().focus()
+    let chain = (editor.chain().focus() as any)
 
     // Handle NodeSelection
     if (selection instanceof NodeSelection) {
@@ -210,7 +210,7 @@ export function toggleList(editor: Editor | null, type: ListType): boolean {
       toggle().run()
     }
 
-    editor.chain().focus().selectTextblockEnd().run()
+    (editor.chain().focus() as any).selectTextblockEnd().run()
 
     return true
   } catch {

@@ -129,7 +129,7 @@ export function useLinkHandler(props: LinkHandlerProps) {
     const { selection } = editor.state
     const isEmpty = selection.empty
 
-    let chain = editor.chain().focus()
+    let chain = (editor.chain().focus() as any)
 
     chain = chain.extendMarkRange("link").setLink({ href: url })
 
