@@ -5,7 +5,7 @@ export const categoryAPI = createApi({
     reducerPath: 'categoryAPI',
     baseQuery: fetchBaseQuery({ baseUrl: '/api/get' }),
     endpoints: (builder) => ({
-        getCategories: builder.query<{ categories: any[] }>({
+        getCategories: builder.query<{ categories: any[] }, void>({
             query: () => 'categories',
         }),
     }),
@@ -15,7 +15,7 @@ export const subcategoryAPI = createApi({
     reducerPath: 'subcategoryAPI',
     baseQuery: fetchBaseQuery({ baseUrl: '/api/get' }),
     endpoints: (builder) => ({
-        getSubCategories: builder.query<{ categories: any[] }>({
+        getSubCategories: builder.query<{ categories: any[] }, void>({
             query: () => 'subcategories',
         }),
     }),
