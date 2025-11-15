@@ -79,7 +79,7 @@ export function canSetTextAlign(
   )
     return false
 
-  return editor.can().setTextAlign(align)
+  return (editor.can() as any).setTextAlign(align)
 }
 
 export function hasSetTextAlign(

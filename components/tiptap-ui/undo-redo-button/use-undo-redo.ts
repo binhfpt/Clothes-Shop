@@ -63,7 +63,7 @@ export function canExecuteUndoRedoAction(
   if (!editor || !editor.isEditable) return false
   if (isNodeTypeSelected(editor, ["image"])) return false
 
-  return action === "undo" ? editor.can().undo() : editor.can().redo()
+  return action === "undo" ? (editor.can() as any).undo() : (editor.can() as any).redo()
 }
 
 /**

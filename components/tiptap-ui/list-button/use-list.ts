@@ -79,11 +79,11 @@ export function canToggleList(
   if (!turnInto) {
     switch (type) {
       case "bulletList":
-        return editor.can().toggleBulletList()
+        return (editor.can() as any).toggleBulletList()
       case "orderedList":
-        return editor.can().toggleOrderedList()
+        return (editor.can() as any).toggleOrderedList()
       case "taskList":
-        return editor.can().toggleList("taskList", "taskItem")
+        return (editor.can() as any).toggleList("taskList", "taskItem")
       default:
         return false
     }
@@ -107,13 +107,13 @@ export function canToggleList(
   // or we can clear formatting/nodes to arrive at a list.
   switch (type) {
     case "bulletList":
-      return editor.can().toggleBulletList() || editor.can().clearNodes()
+      return (editor.can() as any).toggleBulletList() || (editor.can() as any).clearNodes()
     case "orderedList":
-      return editor.can().toggleOrderedList() || editor.can().clearNodes()
+      return (editor.can() as any).toggleOrderedList() || (editor.can() as any).clearNodes()
     case "taskList":
       return (
-        editor.can().toggleList("taskList", "taskItem") ||
-        editor.can().clearNodes()
+        (editor.can() as any).toggleList("taskList", "taskItem") ||
+        (editor.can() as any).clearNodes()
       )
     default:
       return false
