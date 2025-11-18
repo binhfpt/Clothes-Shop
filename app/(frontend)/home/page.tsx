@@ -1,45 +1,31 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useGetClientInformationQuery } from '@/app/redux/api/meAPI'
+import { clearMe, setMe } from '@/app/redux/slice/user/me'
+import { RootState } from '@/app/redux/store/store'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 const HomePage = () => {
-    const [user, setUser] = useState<any>(null)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState('')
+    const { data, error, isLoading } = useGetClientInformationQuery()
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await fetch('/api/me', {
-                    method: 'GET',
-                    cache: "no-cache"
-                    // Browser tự động gửi cookies, không cần thêm gì!
-                })
-
-                if (!res.ok) {
-                    throw new Error('Failed to fetch user')
-                }
-
-                const data = await res.json()
-                setUser(data.user)
-            } catch (err: any) {
-                setError(err.message)
-            } finally {
-                setLoading(false)
-            }
+        if (data?.user) {
+            dispatch(setMe(data.user))
+        } else if (error) {
+            dispatch(clearMe())
         }
+    }, [data, error, dispatch])
 
-        fetchUser()
-    }, [])
-
-    if (loading) return <div>Đang tải...</div>
-    if (error) return <div>Lỗi: {error}</div>
-    if (!user) return <div>Không tìm thấy user</div>
+    if (isLoading) return <div>Đang tải...</div>
+    if (error) return <div>error</div>
+    if (!data || data.user === null) return <div>Không tìm thấy user</div>
 
     return (
         <div>
-            <h1>Xin chào, {user.username}</h1>
-            <p>Email: {user.email}</p>
+            <h1>Xin chào, {data.user.username}</h1>
+            <p>Email: {data.user.email}</p>
         </div>
     )
 }

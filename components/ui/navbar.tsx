@@ -19,8 +19,11 @@ import {
 import { Button } from "./button";
 import { Label } from "./label";
 import { Input } from "./input";
-import { CircleUserRound, Moon, ShoppingCart, Sun } from "lucide-react";
+import { CircleUserRound, DoorOpenIcon, Fingerprint, Heart, HelpCircle, Moon, Settings, ShoppingCart, Sun, User2 } from "lucide-react";
 import { useGetClientInformationQuery } from "@/app/redux/api/meAPI";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "./dropdown-menu";
+import LogoutButton from "../logout-button";
 // giữ nguyên các import khác...
 
 type NavBarProps = {
@@ -54,10 +57,75 @@ const NavBar = ({ onDarkmode, initialDark = false }: NavBarProps) => {
                 <div className="hidden md:flex items-center mr-8 gap-3">
 
                     {isLoading ? <div className="flex items-center space-x-4">
-                        <Skeleton className="h-12 w-12 rounded-full" />
-                    </div> : data && data.user ? <CircleUserRound strokeWidth={1.3} className="text-[#111827] h-7 w-7" /> : <Link href={"/login"}>
-                        <Button className="bg-bg-btn-dynamic text-text-button hover:bg-btn-hv-bg cursor-pointer">Log in</Button>
-                    </Link>}
+                        <Skeleton className="h-8 w-8 rounded-full" />
+                    </div> : data && data.user ?
+                        <DropdownMenu >
+                            <DropdownMenuTrigger asChild>
+                                <Avatar>
+                                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent side="left" className="w-56" align="center">
+                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem>
+                                        Profile
+                                        <DropdownMenuShortcut><User2 /></DropdownMenuShortcut>
+
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        Billing
+                                        <DropdownMenuShortcut><Fingerprint /></DropdownMenuShortcut>
+
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        Settings
+                                        <DropdownMenuShortcut><Settings /></DropdownMenuShortcut>
+
+                                    </DropdownMenuItem>
+
+                                </DropdownMenuGroup>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuGroup>
+                                    {/* <DropdownMenuSub>
+                                        <DropdownMenuSubTrigger>Products</DropdownMenuSubTrigger>
+                                        <DropdownMenuPortal>
+                                            <DropdownMenuSubContent>
+                                                <DropdownMenuItem>Email</DropdownMenuItem>
+                                                <DropdownMenuItem>Message</DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem>More...</DropdownMenuItem>
+                                            </DropdownMenuSubContent>
+                                        </DropdownMenuPortal>
+                                    </DropdownMenuSub> */}
+                                    <DropdownMenuItem>
+                                        Products
+                                        <DropdownMenuShortcut><Heart fill="red" strokeWidth={0.5} /></DropdownMenuShortcut>
+
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        Brands
+                                        <DropdownMenuShortcut><Heart fill="red" strokeWidth={0.5} /></DropdownMenuShortcut>
+
+                                    </DropdownMenuItem>
+                                </DropdownMenuGroup>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>Support
+                                    <DropdownMenuShortcut><HelpCircle /></DropdownMenuShortcut>
+
+                                </DropdownMenuItem>
+                                <DropdownMenuItem disabled>...</DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                    <LogoutButton />
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        : <Link href={"/login"}>
+                            <Button className="bg-bg-btn-dynamic text-text-button hover:bg-btn-hv-bg cursor-pointer">Log in</Button>
+                        </Link>}
 
                     <Sheet>
                         <SheetTrigger asChild>

@@ -1,7 +1,14 @@
 // middleware.ts
 import { NextResponse, NextRequest } from "next/server"
 import { jwtVerify } from "jose"
+// import Redis from "ioredis"
 
+// const local_redis = new Redis(
+//     {
+//         host: "127.0.0.1",
+//         port: 6379,
+//     }
+// )
 const publicPaths = [
     "/login",
     "/register",
@@ -10,39 +17,36 @@ const publicPaths = [
     "/api/public",
 ]
 
-const isPublicPath = (pathname: string) => {
-    // "/" phải check exact, vì mọi path đều bắt đầu bằng "/"
-    if (pathname === "/") return true
-
-    return publicPaths.some((path) => {
-        if (path === "/") return false
-        return pathname.startsWith(path)
-    })
-}
-
-
 export async function middleware(request: NextRequest) {
     const url = request.nextUrl.clone()
     const token = request.cookies.get("token")?.value
-
     if (!token) {
         url.pathname = "/login"
         url.searchParams.set("from", request.nextUrl.pathname)
         return NextResponse.redirect(url)
     }
-
     try {
-        // Verify HS256 với secret
         const secret = new TextEncoder().encode(process.env.TOKEN_SECRET!)
         const { payload } = await jwtVerify(token, secret, { algorithms: ["HS256"] })
-
-        // (tuỳ) kiểm tra thêm claim (role/scope/iss/aud)
+        if (!payload) return NextResponse.redirect("/login")
         if (payload.role === "admin") {
             url.pathname = "/admin"
             return NextResponse.redirect(url)
         }
+        // const redisToken = await local_redis.get(`access:${payload.id}`)
+        // if (!redisToken) {
+        //     // Token đã bị revoke hoặc hết hạn TTL từ Redis
+        //     const res = NextResponse.redirect("/login")
+        //     res.cookies.delete("token")
+        //     return res
+        // }
+        // if (redisToken !== token) {
+        //     const res = NextResponse.redirect("/login")
+        //     res.cookies.delete("token")
+        //     return res
+        // }
         const requestHeaders = new Headers(request.headers);
-        requestHeaders.set("x-user-id", String(payload.id));      // chú ý: id, không phải _id
+        requestHeaders.set("x-user-id", String(payload.id));
         requestHeaders.set("x-user-email", String(payload.email));
         requestHeaders.set("x-user-role", String(payload.role ?? ""));
         return NextResponse.next({

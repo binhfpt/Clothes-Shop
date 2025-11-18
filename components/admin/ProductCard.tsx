@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useGetProductsQuery } from '@/app/redux/api/productAPI'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/redux/store/store'
+import { ShoppingCart } from 'lucide-react'
 
 
 
@@ -63,18 +64,21 @@ export const ProductCard = ({ product }: { product: any }) => {
             </div>
             <h4 className='ml-2 text-gray-800 font-satoshi mt-4 font-semibold line-clamp-2 leading-[130%]'>  {product.title}</h4>
             {/* star  */}
-            <div className='mt-2'>
+            <div className='mt-2 flex justify-between items-center '>
                 <StarRating rating={product.ratingAvg} />
+                <p className='text-text-description text-sm'>
+                    {`${product.sold} sold`}
+                </p>
             </div>
             {/* price + amount sell */}
-            <div className='flex  ml-2 mt-4 justify-between items-center w-[92%]'>
+            <div className='flex ml-2  mt-4 justify-between items-center '>
 
-                <h3 style={{ fontSize: "18px" }} className='text-[#EE4D2D] border-2 rounded-2xl px-5 py-0.5 border-[#EE4D2D] font-semibold'>
+                <h3 style={{ fontSize: "20px" }} className='text-[#EE4D2D]   font-semibold'>
                     {`$${product.price}`}
                 </h3>
-                <p className='text-text-description'>
-                    {`Sold:${product.sold}`}
-                </p>
+                <h3 style={{ fontSize: "18px" }} onClick={() => console.log(product._id)} className='text-green-500 border-2 flex items-center hover:bg-green-50 cursor-pointer w-25 justify-between rounded-2xl px-3 py-1.5 border-green-500 font-semibold'>
+                    <ShoppingCart size={20} /><span className='font-satoshi  text-sm font-semibold'>ADD</span>
+                </h3>
             </div>
 
         </div>

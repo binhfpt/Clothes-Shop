@@ -11,6 +11,7 @@ import advancedFilterSlice from "../slice/product/advancedFilter"
 import sortProductsSlice from "../slice/product/sortSlice"
 import { blogAPI } from '../api/blogAPI'
 import { meAPI } from '../api/meAPI'
+import meSlice from "../slice/user/me"
 export const store = configureStore({
     reducer: {
         [productApi.reducerPath]: productApi.reducer,
@@ -26,7 +27,8 @@ export const store = configureStore({
         color: colorSlice,
         sortproducts: sortProductsSlice,
         subCategory: subCategorySlice,
-        brand: brandSlice
+        brand: brandSlice,
+        me: meSlice
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(productApi.middleware).concat(categoryAPI.middleware).concat(subcategoryAPI.middleware)
