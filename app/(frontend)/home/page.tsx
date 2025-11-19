@@ -3,6 +3,7 @@
 import { useGetClientInformationQuery } from '@/app/redux/api/meAPI'
 import { clearMe, setMe } from '@/app/redux/slice/user/me'
 import { RootState } from '@/app/redux/store/store'
+import FindYourFavorProduct from '@/components/FindYourFavorProduct'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -24,8 +25,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <h1>Xin chào, {data.user.username}</h1>
-            <p>Email: {data.user.email}</p>
+            <FindYourFavorProduct />
         </div>
     )
 }

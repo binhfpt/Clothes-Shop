@@ -17,84 +17,67 @@ export async function POST(request: NextRequest) {
         const email = body?.email;
         const password = body?.password;
 
-        if (!email || !password || typeof email !== "string" || typeof password !== "string") {
-            return NextResponse.json(
-                { message: "invalid email or password" },
-                { status: 400 }
-            );
+        if (!email || !password) {
+            return NextResponse.json({ message: "invalid email or password" }, { status: 400 });
         }
 
         const normalizedEmail = email.toLowerCase().trim();
         const user = await User.findOne({ email: normalizedEmail });
 
         if (!user) {
-            return NextResponse.json(
-                { message: "invalid email or password" },
-                { status: 400 }
-            );
+            return NextResponse.json({ message: "invalid email or password" }, { status: 400 });
         }
 
         const ok = await bcrypt.compare(password, user.password);
         if (!ok) {
-            return NextResponse.json(
-                { message: "invalid email or password" },
-                { status: 400 }
-            );
+            return NextResponse.json({ message: "invalid email or password" }, { status: 400 });
         }
 
-        if (!process.env.TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
-            console.error("Missing TOKEN_SECRET or REFRESH_TOKEN_SECRET");
-            return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+        // Dọn session rác
+        const userSessionsKey = `user_sessions:${user._id}`;
+        const sessions = await redis.smembers(userSessionsKey);
+
+        for (const sid of sessions) {
+            const exists = await redis.exists(`refresh:${sid}`);
+            if (!exists) {
+                await redis.srem(userSessionsKey, sid); // xoá sid rác
+            }
         }
 
-        //  mỗi login = 1 session mới
+        // Tạo session mới
         const sessionId = randomUUID();
 
         const tokenPayload = {
             id: user._id.toString(),
             role: user.role,
             email: user.email,
-            sid: sessionId, // thêm sessionId vào payload
+            sid: sessionId,
         };
 
-        const token = jwt.sign(tokenPayload, process.env.TOKEN_SECRET, { expiresIn: "15m" });
-        const rftoken = jwt.sign(tokenPayload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "24h" });
+        const token = jwt.sign(tokenPayload, process.env.TOKEN_SECRET!, { expiresIn: "15m" });
+        const rftoken = jwt.sign(tokenPayload, process.env.REFRESH_TOKEN_SECRET!, { expiresIn: "24h" });
 
-        const res = NextResponse.json(
-            { message: "login done", success: true },
-            { status: 200 }
-        );
+        const res = NextResponse.json({ message: "login done", success: true });
 
-        // cookies
-        res.cookies.set("token", token, {
+        // Cookies
+        const cookieOptions = {
             httpOnly: true,
-            path: "/",
-            maxAge: expiresIn,
-            sameSite: "strict",
+            sameSite: "strict" as const,
             secure: process.env.NODE_ENV === "production",
-        });
-
-        res.cookies.set("rftoken", rftoken, {
-            httpOnly: true,
             path: "/",
-            maxAge: RfexpiresIn,
-            sameSite: "strict",
-            secure: process.env.NODE_ENV === "production",
-        });
+        };
 
-        //  Redis – lưu theo sessionId, không phải userId nữa
-        const refreshKey = `refresh:${sessionId}`;               // 1 key / session
-        const userSessionsKey = `user_sessions:${user._id}`;     // set chứa nhiều sid
+        res.cookies.set("token", token, { ...cookieOptions, maxAge: expiresIn });
+        res.cookies.set("rftoken", rftoken, { ...cookieOptions, maxAge: RfexpiresIn });
 
-        await redis.set(refreshKey, rftoken, "EX", RfexpiresIn); // lưu refresh token
-        await redis.sadd(userSessionsKey, sessionId);            // add session vào set user
+        // Lưu refresh token
+        await redis.set(`refresh:${sessionId}`, rftoken, "EX", RfexpiresIn);
+        await redis.sadd(userSessionsKey, sessionId);
 
         return res;
-    } catch (error: any) {
+
+    } catch (error) {
         console.error("Login error:", error);
-        return NextResponse.json(
-            { error: "Internal server error" },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }

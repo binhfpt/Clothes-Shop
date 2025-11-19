@@ -24,16 +24,18 @@ import { useGetClientInformationQuery } from "@/app/redux/api/meAPI";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "./dropdown-menu";
 import LogoutButton from "../logout-button";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store/store";
 // giữ nguyên các import khác...
 
 type NavBarProps = {
-    onDarkmode?: (isOn: boolean) => void;   // callback lên cha (optional)
-    initialDark?: boolean;                  // nếu muốn
+    onDarkmode?: (isOn: boolean) => void;
+    initialDark?: boolean;
 };
 
 const NavBar = ({ onDarkmode, initialDark = false }: NavBarProps) => {
     const [isOn, setIsOn] = useState(initialDark);
-
+    const productCards = useSelector((state: RootState) => state.productCard.productCards)
     const { data, error, isLoading } = useGetClientInformationQuery()
 
     // thông báo lên cha mỗi khi isOn đổi
@@ -129,10 +131,10 @@ const NavBar = ({ onDarkmode, initialDark = false }: NavBarProps) => {
 
                     <Sheet>
                         <SheetTrigger asChild>
-                            <div className="relative h-10 w-8 flex justify-between items-center ">
+                            <div onClick={() => console.log(productCards)} className="relative h-10 w-8 flex justify-between items-center ">
                                 <ShoppingCart className="text-text-l cursor-pointer" />
                                 <div className="w-5 h-5 cursor-pointer rounded-full flex items-center justify-center text-xs absolute top-0 right-0 font-satoshi font-semibold bg-red-500 text-white">
-                                    12
+                                    {productCards.length}
                                 </div>
                             </div>
                         </SheetTrigger>

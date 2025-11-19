@@ -12,6 +12,7 @@ import sortProductsSlice from "../slice/product/sortSlice"
 import { blogAPI } from '../api/blogAPI'
 import { meAPI } from '../api/meAPI'
 import meSlice from "../slice/user/me"
+import productCardSlice from "../slice/product-card/productCard"
 export const store = configureStore({
     reducer: {
         [productApi.reducerPath]: productApi.reducer,
@@ -28,7 +29,8 @@ export const store = configureStore({
         sortproducts: sortProductsSlice,
         subCategory: subCategorySlice,
         brand: brandSlice,
-        me: meSlice
+        me: meSlice,
+        productCard: productCardSlice
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(productApi.middleware).concat(categoryAPI.middleware).concat(subcategoryAPI.middleware)

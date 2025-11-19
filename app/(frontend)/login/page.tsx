@@ -1,13 +1,14 @@
 "use client"
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import axios, { AxiosError } from "axios"
 import { toast } from "react-hot-toast"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { LoaderIcon } from 'lucide-react'
 import Link from "next/link"
+
 type SignupForm = {
     email: string
     password: string
@@ -15,12 +16,38 @@ type SignupForm = {
 
 export default function LoginPage() {
     const router = useRouter()
+    const params = useSearchParams()
+
     const [form, setForm] = useState<SignupForm>({
         email: "",
         password: ""
     })
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState("")
+
+    // ============================
+    // 🔥 Nếu middleware redirect về login?refresh=1
+    // ============================
+    useEffect(() => {
+        const needRefresh = params.get("refresh") === "1"
+        if (!needRefresh) return
+
+            ; (async () => {
+                try {
+                    const res = await fetch("/api/refresh", { method: "POST" })
+
+                    if (res.ok) {
+                        toast.success("Session refreshed")
+                        const backTo = params.get("from") || "/home"
+                        router.push(backTo)
+                    } else {
+                        toast.error("Session expired, please login again")
+                    }
+                } catch {
+                    toast.error("Refresh failed")
+                }
+            })()
+    }, [params, router])
 
     const onChange =
         (field: keyof SignupForm) =>
@@ -32,12 +59,11 @@ export default function LoginPage() {
         ev.preventDefault()
         try {
             setLoading(true)
-            // KHÔNG gửi repassword
             const payload = {
                 email: form.email.trim(),
                 password: form.password,
             }
-            // Dùng URL tương đối hoặc NEXT_PUBLIC_DOMAIN
+
             const res = await axios.post("/api/login", payload)
             if (res.data.success) router.push("/home")
             toast.success("Login successfully")
@@ -49,6 +75,7 @@ export default function LoginPage() {
                 ax.response?.data?.error ||
                 ax.message ||
                 "Đăng ký thất bại"
+
             setMessage(apiMsg)
             toast.error(apiMsg)
         } finally {
