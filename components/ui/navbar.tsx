@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
     Sheet,
     SheetClose,
@@ -19,7 +19,7 @@ import {
 import { Button } from "./button";
 import { Label } from "./label";
 import { Input } from "./input";
-import { CircleUserRound, DoorOpenIcon, Fingerprint, Heart, HelpCircle, Moon, Settings, ShoppingCart, Sun, User2 } from "lucide-react";
+import { CircleUserRound, DoorOpenIcon, Fingerprint, Heart, HelpCircle, Minus, Moon, Plus, Settings, ShoppingCart, Sun, Trash, User2, X } from "lucide-react";
 import { useGetClientInformationQuery } from "@/app/redux/api/meAPI";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "./dropdown-menu";
@@ -38,7 +38,26 @@ const NavBar = ({ onDarkmode, initialDark = false }: NavBarProps) => {
     const productCards = useSelector((state: RootState) => state.productCard.productCards)
     const { data, error, isLoading } = useGetClientInformationQuery()
 
+    const myCards = useMemo(() => {
+        const map: Record<any, any> = {}
+        for (const v of productCards) {
+            const key = `${v.variant.sku}`
+            if (!map[key]) {
+                map[key] = { ...v, count: 1 }
+            } else {
+                map[key].count += 1
+            }
+        }
+        return Object.values(map)
+    }, [productCards])
     // thông báo lên cha mỗi khi isOn đổi
+    const totalMoney = useMemo(() => {
+        let temp = 0
+        myCards.map((mc: any, ind: number) => (
+            temp += mc.variant.price * mc.count
+        ))
+        return temp
+    }, [myCards])
     useEffect(() => {
         onDarkmode?.(isOn);
     }, [isOn, onDarkmode]);
@@ -131,30 +150,88 @@ const NavBar = ({ onDarkmode, initialDark = false }: NavBarProps) => {
 
                     <Sheet>
                         <SheetTrigger asChild>
-                            <div onClick={() => console.log(productCards)} className="relative h-10 w-8 flex justify-between items-center ">
+                            <div onClick={() => console.log(myCards)} className="relative h-10 w-8 flex justify-between items-center ">
                                 <ShoppingCart className="text-text-l cursor-pointer" />
                                 <div className="w-5 h-5 cursor-pointer rounded-full flex items-center justify-center text-xs absolute top-0 right-0 font-satoshi font-semibold bg-red-500 text-white">
                                     {productCards.length}
                                 </div>
                             </div>
                         </SheetTrigger>
-                        <SheetContent>
+                        <SheetContent className="max-h-screen overflow-y-auto">
                             <SheetHeader>
-                                <SheetTitle>Edit profile</SheetTitle>
-                                <SheetDescription>
-                                    Make changes to your profile here. Click save when you&apos;re done.
+                                <SheetTitle className="text-gray-800">Manage your cards</SheetTitle>
+                                <SheetDescription className="text-gray-700">
+                                    Make changes to your cards here. Click save when you&apos;re done.
                                 </SheetDescription>
                             </SheetHeader>
-                            <div className="grid flex-1 auto-rows-min gap-6 px-4">
-                                <div className="grid gap-3">
-                                    <Label htmlFor="sheet-demo-name">Name</Label>
-                                    <Input id="sheet-demo-name" defaultValue="Pedro Duarte" />
+                            <>
+                                <div className="grid flex-1 auto-rows-min gap-6 px-4">
+                                    {myCards.map((mc: any, ind: number) => (
+                                        <div key={mc.variant.sku}>
+                                            <div className="w-full  flex gap-5  h-40">
+                                                <div style={{ backgroundImage: `url(${mc.product.images[0]})` }} className="w-[30%] rounded-2xl h-full bg-cover bg-center">
+
+                                                </div>
+                                                <div className="w-[70%] flex-col flex gap-0.5 h-full">
+                                                    <div className="text-neutral-800 font-sans h-full font-semibold line-clamp-2 break-words">{mc.product.title}</div>
+                                                    <div className="flex gap-1 items-center">
+                                                        <div className="text-neutral-500">{mc.variant.color}</div>
+                                                        <div>|</div>
+                                                        <div className="text-neutral-500">{mc.variant.size}</div>
+                                                    </div>
+                                                    <div className='flex gap-2  items-center '>
+                                                        <div className='text-neutral-800' >Amout:</div>
+                                                        <Minus size={18} className='text-gray-400 cursor-pointer  hover:text-bg-btn-dynamic' />
+
+                                                        <div className={` bg-neutral-100 px-3 py-1 text-xl text-red-400 font-semibold`}  >{mc.count}</div>
+                                                        <Plus size={18} className='text-gray-400 cursor-pointer  hover:text-bg-btn-dynamic' />
+                                                    </div>
+
+                                                    <div className="flex h-full justify-end flex-col  ">
+                                                        <div className="flex justify-between items-center">
+                                                            <h3
+                                                                style={{ fontSize: "16px" }}
+                                                                className="text-green-500 w-20 border-2 flex items-center hover:bg-green-50 cursor-pointer  justify-center rounded-2xl px-5 py-1.5 border-green-500 "
+                                                            >
+                                                                ${mc.variant.price * mc.count}
+                                                            </h3>
+                                                            <h3
+                                                                style={{ fontSize: "16px" }}
+                                                                className="text-red-500   flex items-center hover:bg-red-50 cursor-pointer  justify-center  rounded-2xl px-2.5 py-1.5 border-red-500 "
+                                                            >
+                                                                <Trash size={20} />
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="w-full h-[1px] bg-neutral-200"></div>
+                                        </div>
+                                    ))}
+                                    {myCards.length > 0 ? <div className="flex justify-between px-5 items-center">
+                                        <div className="text-neutral-800 ">
+                                            Sub-Total:
+                                        </div><div className="text-xl text-red-500">
+                                            ${totalMoney}
+                                        </div>
+                                    </div> : ""}
+                                    {myCards.length > 0 ?
+                                        <div className="flex w-full justify-center gap-2">
+                                            <h3
+                                                style={{ fontSize: "16px" }}
+                                                className="text-gray-800 w-[45%] border-2 flex items-center hover:bg-gray-50 cursor-pointer  justify-center rounded-4xl px-5 py-3 font-semibold border-gray-300 "
+                                            >
+                                                View card
+                                            </h3><h3
+                                                style={{ fontSize: "16px" }}
+                                                className="text-gray-50 w-[45%] border-2 flex items-center hover:bg-gray-700 bg-gray-800 cursor-pointer  justify-center rounded-4xl px-5 py-3  font-semibold"
+                                            >
+                                                Check out
+                                            </h3>
+                                        </div> : ""}
                                 </div>
-                                <div className="grid gap-3">
-                                    <Label htmlFor="sheet-demo-username">Username</Label>
-                                    <Input id="sheet-demo-username" defaultValue="@peduarte" />
-                                </div>
-                            </div>
+
+                            </>
                             <SheetFooter>
                                 <Button type="submit">Save changes</Button>
                                 <SheetClose asChild>

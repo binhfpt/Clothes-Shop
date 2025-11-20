@@ -14,6 +14,7 @@ import { Button } from '../ui/button'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../ui/carousel'
 import { Card, CardContent } from '../ui/card'
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet'
+import SheetContentProduct from '../product/SheetContentProduct'
 
 
 
@@ -21,7 +22,7 @@ export const ProductCard = ({ product }: { product: any }) => {
 
     const raw_colors = Array.from(new Set(product.variants.map((v: any) => v.color)))
     const raw_size = Array.from(new Set(product.variants.map((v: any) => v.size)))
-
+    const variant = product.variants
     const dispatch = useDispatch()
     const final_colors = raw_colors.map((rc: any) => {
         switch (rc) {
@@ -92,7 +93,6 @@ export const ProductCard = ({ product }: { product: any }) => {
                     <SheetTrigger asChild>
                         <h3
                             style={{ fontSize: "18px" }}
-                            onClick={() => dispatch(addProductCards(product))}
                             className="text-green-500 border-2 flex items-center hover:bg-green-50 cursor-pointer w-25 justify-between rounded-2xl px-3 py-1.5 border-green-500 font-semibold"
                         >
                             <ShoppingCart size={20} />
@@ -106,7 +106,7 @@ export const ProductCard = ({ product }: { product: any }) => {
                                 Make changes to your card here. Click save when you&apos;re done.
                             </SheetDescription>
                         </SheetHeader>
-                        <div className="flex gap-20 px-4">
+                        {/* <div className="flex gap-20 px-4">
                             <div className=' flex gap-2 h-[360px]'>
                                 <Carousel className="w-full max-w-xs relative">
                                     <CarouselContent >
@@ -184,7 +184,8 @@ export const ProductCard = ({ product }: { product: any }) => {
                                 </div>
                             </div>
 
-                        </div>
+                        </div> */}
+                        <SheetContentProduct variant={variant} final_colors={final_colors} product={product} />
                         <SheetFooter>
                             <Button type="submit">Save changes</Button>
                             <SheetClose asChild>
